@@ -22,7 +22,7 @@ void Box::Draw() {
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box);
 
-  for (const Particle& particle : simulator_.GetParticles()) {
+  for (const Particle& particle : simulator_) {
     double radius = particle.GetRadius() * scale_factor_;
 
     glm::vec2 position = particle.GetPosition();

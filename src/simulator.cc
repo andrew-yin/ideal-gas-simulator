@@ -16,8 +16,12 @@ void Simulator::AddParticle(const Particle& particle) {
   }
 }
 
-std::vector<Particle> Simulator::GetParticles() const {
-  return particles_;
+std::vector<Particle>::iterator Simulator::begin() {
+  return particles_.begin();
+}
+
+std::vector<Particle>::iterator Simulator::end() {
+  return particles_.end();
 }
 
 void Simulator::Update() {
