@@ -17,7 +17,7 @@ void IdealGasApp::draw() {
 }
 
 void IdealGasApp::update() {
-
+  box_.Update();
 }
 
 }  // namespace idealgas

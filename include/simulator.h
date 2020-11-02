@@ -12,6 +12,8 @@ class Simulator {
   void AddParticle(const Particle& particle);
 
   std::vector<Particle> GetParticles() const;
+  void Update();
+  const double kPlaneWidth = 100;
 
  private:
   std::vector<Particle> particles_;
