@@ -5,9 +5,24 @@ namespace idealgas {
 Simulator::Simulator() = default;
 
 void Simulator::AddParticle(const Particle& particle) {
-  particles_.push_back(particle);
-  Particle p(6.0, glm::vec2(25, 20), glm::vec2(-0.25, -1));
-  particles_.push_back(p);
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, 0.5)));
+  }
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(-0.25, 0.5)));
+  }
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, -0.25)));
+  }
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, 0.5)));
+  }
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(-0.25, 0.5)));
+  }
+  for (size_t i = 5; i <= 90; i++) {
+    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, -0.25)));
+  }
 }
 
 std::vector<Particle> Simulator::GetParticles() const {
@@ -17,15 +32,16 @@ std::vector<Particle> Simulator::GetParticles() const {
 void Simulator::Update() {
   for (Particle& particle : particles_) {
     glm::vec2 position = particle.GetPosition();
-    if (position.x >= 100 - particle.GetRadius() ||
-        position.x <= particle.GetRadius()) {
-      glm::vec2 velocity = particle.GetVelocity();
+    glm::vec2 velocity = particle.GetVelocity();
+    if ((position.x >= 100 - particle.GetRadius() && velocity.x >= 0) ||
+        (position.x <= particle.GetRadius() && velocity.x <= 0)) {
+      velocity = particle.GetVelocity();
       glm::vec2 new_velocity(-velocity.x, velocity.y);
       particle.SetVelocity(new_velocity);
     }
-    if (position.y >= 100 - particle.GetRadius() ||
-        position.y <= particle.GetRadius()) {
-      glm::vec2 velocity = particle.GetVelocity();
+    if ((position.y >= 100 - particle.GetRadius() && velocity.y >= 0) ||
+        (position.y <= particle.GetRadius() && velocity.y <= 0)) {
+      velocity = particle.GetVelocity();
       glm::vec2 new_velocity(velocity.x, -velocity.y);
       particle.SetVelocity(new_velocity);
     }
