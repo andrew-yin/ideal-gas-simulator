@@ -12,16 +12,26 @@ Box::Box(const glm::vec2& top_left_corner, double box_length)
 }
 
 void Box::Draw() {
-  vec2 pixel_bottom_right = top_left_corner_ + vec2(box_length_, box_length_);
+  DrawBox();
+  DrawParticles();
+}
 
+void Box::Update() {
+  simulator_.Update();
+}
+
+void Box::DrawBox() {
+  vec2 pixel_bottom_right = top_left_corner_ + vec2(box_length_, box_length_);
   ci::Rectf pixel_bounding_box(top_left_corner_, pixel_bottom_right);
 
   ci::gl::color(ci::Color("white"));
   ci::gl::drawSolidRect(pixel_bounding_box);
 
   ci::gl::color(ci::Color("black"));
-  ci::gl::drawStrokedRect(pixel_bounding_box);
+  ci::gl::drawStrokedRect(pixel_bounding_box, 2.0);
+}
 
+void Box::DrawParticles() {
   for (const Particle& particle : simulator_) {
     double radius = particle.GetRadius() * scale_factor_;
 
@@ -34,10 +44,6 @@ void Box::Draw() {
     ci::gl::color(ci::Color("black"));
     ci::gl::drawStrokedCircle(position, radius, 1.0, -1);
   }
-}
-
-void Box::Update() {
-  simulator_.Update();
 }
 
 }  // namespace idealgas

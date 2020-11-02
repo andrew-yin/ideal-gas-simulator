@@ -17,6 +17,9 @@ class Box {
   Simulator simulator_;
 
   double scale_factor_;
+
+  void DrawBox();
+  void DrawParticles();
 };
 
 }  // namespace idealgas
