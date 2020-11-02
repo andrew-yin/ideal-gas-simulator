@@ -18,6 +18,10 @@ class Simulator {
 
  private:
   std::vector<Particle> particles_;
+
+  void UpdateWallCollisions();
+  void UpdateParticleCollisions();
+  void UpdatePositions();
 };
 
 }  // namespace idealgas

@@ -17,6 +17,12 @@ std::vector<Particle>::iterator Simulator::end() {
 }
 
 void Simulator::Update() {
+  UpdateWallCollisions();
+  UpdateParticleCollisions();
+  UpdatePositions();
+}
+
+void Simulator::UpdateWallCollisions() {
   for (Particle& particle : particles_) {
     glm::vec2 position = particle.GetPosition();
     glm::vec2 velocity = particle.GetVelocity();
@@ -33,7 +39,9 @@ void Simulator::Update() {
       particle.SetVelocity(new_velocity);
     }
   }
+}
 
+void Simulator::UpdateParticleCollisions() {
   for (size_t i = 0; i < particles_.size() - 1; i++) {
     Particle& particle1 = particles_[i];
     glm::vec2 particle1_velocity = particle1.GetVelocity();
@@ -45,27 +53,29 @@ void Simulator::Update() {
       glm::vec2 particle2_position = particle2.GetPosition();
 
       if ((glm::length(particle1_position - particle2_position) <=
-           particle1.GetRadius() + particle2.GetRadius()) &&
+          particle1.GetRadius() + particle2.GetRadius()) &&
           (glm::dot(particle1_velocity - particle2_velocity,
                     particle1_position - particle2_position) < 0)) {
         glm::vec2 x1_minus_x2 = particle1_position - particle2_position;
         x1_minus_x2 *= (glm::dot(particle1_velocity - particle2_velocity,
                                  particle1_position - particle2_position)) /
-                       (glm::length(particle1_position - particle2_position) *
-                        glm::length(particle1_position - particle2_position));
+            (glm::length(particle1_position - particle2_position) *
+                glm::length(particle1_position - particle2_position));
 
         glm::vec2 x2_minus_x1 = particle2_position - particle1_position;
         x2_minus_x1 *= (glm::dot(particle2_velocity - particle1_velocity,
                                  particle2_position - particle1_position)) /
-                       (glm::length(particle2_position - particle1_position) *
-                        glm::length(particle2_position - particle1_position));
+            (glm::length(particle2_position - particle1_position) *
+                glm::length(particle2_position - particle1_position));
 
         particle1.SetVelocity(particle1_velocity - x1_minus_x2);
         particle2.SetVelocity(particle2_velocity - x2_minus_x1);
       }
     }
   }
+}
 
+void Simulator::UpdatePositions() {
   for (Particle& particle : particles_) {
     particle.UpdatePosition();
   }
