@@ -21,6 +21,7 @@ class Particle {
 
   void UpdatePosition();
 
+  void InvertVelocityComponent(char component);
  private:
   double radius_;
   glm::vec2 position_;

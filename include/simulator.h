@@ -22,6 +22,8 @@ class Simulator {
   void UpdateWallCollisions();
   void UpdateParticleCollisions();
   void UpdatePositions();
+  bool IsAgainstVerticalWall(Particle particle);
+  bool IsAgainstHorizontalWall(Particle particle);
 };
 
 }  // namespace idealgas
