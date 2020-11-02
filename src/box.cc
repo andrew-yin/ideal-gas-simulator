@@ -19,7 +19,7 @@ void Box::Draw() {
   ci::gl::drawSolidRect(pixel_bounding_box);
 
   ci::gl::color(ci::Color("black"));
-  ci::gl::drawStrokedRect(pixel_bounding_box, 10.0);
+  ci::gl::drawStrokedRect(pixel_bounding_box, 5.0);
 
   for (const Particle& particle: simulator_.GetParticles()) {
     double radius = particle.GetRadius() * box_length_/simulator_.kPlaneWidth;

@@ -3,7 +3,7 @@
 namespace idealgas {
 
 Particle::Particle()
-    : radius_(1), position_(50, 70), velocity_(0.5, 1.5) {
+    : radius_(6), position_(50, 70), velocity_(0.5, 1.5) {
 }
 
 Particle::Particle(double radius, const glm::vec2& position,
