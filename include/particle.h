@@ -19,6 +19,8 @@ class Particle {
   void SetPosition(glm::vec2 position);
   void SetVelocity(glm::vec2 velocity);
 
+  void UpdatePosition();
+
  private:
   double radius_;
   glm::vec2 position_;

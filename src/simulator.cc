@@ -14,15 +14,6 @@ void Simulator::AddParticle(const Particle& particle) {
   for (size_t i = 5; i <= 90; i++) {
     particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, -0.25)));
   }
-  for (size_t i = 5; i <= 90; i++) {
-    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, 0.5)));
-  }
-  for (size_t i = 5; i <= 90; i++) {
-    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(-0.25, 0.5)));
-  }
-  for (size_t i = 5; i <= 90; i++) {
-    particles_.push_back(Particle(1, glm::vec2(i, i), glm::vec2(0.25, -0.25)));
-  }
 }
 
 std::vector<Particle> Simulator::GetParticles() const {
@@ -80,9 +71,7 @@ void Simulator::Update() {
   }
 
   for (Particle& particle : particles_) {
-    glm::vec2 position = particle.GetPosition();
-    glm::vec2 velocity = particle.GetVelocity();
-    particle.SetPosition(position + velocity);
+    particle.UpdatePosition();
   }
 }
 

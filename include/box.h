@@ -16,6 +16,7 @@ class Box {
   double box_length_;
   Simulator simulator_;
 
+  double scale_factor_;
 };
 
 }  // namespace idealgas

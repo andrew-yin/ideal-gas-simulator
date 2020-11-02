@@ -31,4 +31,8 @@ void Particle::SetVelocity(glm::vec2 velocity) {
   velocity_ = velocity;
 }
 
+void Particle::UpdatePosition() {
+  position_ += velocity_;
+}
+
 }  // namespace idealgas
