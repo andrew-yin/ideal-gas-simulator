@@ -12,11 +12,18 @@ class Particle {
   Particle(double mass, double radius, const glm::vec2& position,
            const glm::vec2& velocity);
 
+  glm::vec2 GetPosition() const;
+  double GetRadius() const;
+
  private:
+  /*
   double mass_;
+   */
   double radius_;
   glm::vec2 position_;
+  /*
   glm::vec2 velocity_;
+   */
 };
 
 }  // namespace idealgas

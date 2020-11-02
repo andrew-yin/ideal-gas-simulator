@@ -11,6 +11,8 @@ class Simulator {
   Simulator();
   void AddParticle(const Particle& particle);
 
+  std::vector<Particle> GetParticles() const;
+
  private:
   std::vector<Particle> particles_;
 };
