@@ -2,8 +2,8 @@
 
 using idealgas::IdealGasApp;
 
-void prepareSettings(NaiveBayesApp::Settings* settings) {
-  settings -> setResizeable(false);
+void prepareSettings(IdealGasApp::Settings* settings) {
+  settings->setResizable(false);
 }
 
 CINDER_APP(IdealGasApp, ci::app::RendererGl, prepareSettings);

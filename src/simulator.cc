@@ -1,5 +1,11 @@
-//
-// Created by Andrew Yin on 11/1/20.
-//
+#include <simulator.h>
 
-#include "../include/simulator.h"
+namespace idealgas {
+
+Simulator::Simulator() = default;
+
+void Simulator::AddParticle(const Particle& particle) {
+  particles_.push_back(particle);
+}
+
+}

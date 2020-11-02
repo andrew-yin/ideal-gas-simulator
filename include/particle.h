@@ -1,19 +1,22 @@
 #pragma once
 
+#include <string>
+
+#include "cinder/gl/gl.h"
+
 namespace idealgas {
 
 class Particle {
  public:
   Particle();
-  Particle(double mass, double radius, std::string color, glm::vec_2 position,
-           glm::vec_2 velocity);
+  Particle(double mass, double radius, const glm::vec2& position,
+           const glm::vec2& velocity);
 
  private:
   double mass_;
   double radius_;
-  std::string color_;
-  glm::vec_2 position_;
-  glm::vec_2 velocity_;
+  glm::vec2 position_;
+  glm::vec2 velocity_;
 };
 
 }  // namespace idealgas
