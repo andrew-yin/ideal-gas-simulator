@@ -36,6 +36,7 @@ void Box::DrawParticles() {
     double radius = particle.GetRadius() * scale_factor_;
 
     glm::vec2 position = particle.GetPosition();
+    position.y = simulator_.kPlaneWidth - position.y;
     position *= scale_factor_;
     position += top_left_corner_;
 
