@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "particle.h"
+#include "cinder/gl/gl.h"
 
 namespace idealgas {
 
@@ -22,8 +23,11 @@ class Simulator {
   void UpdateWallCollisions();
   void UpdateParticleCollisions();
   void UpdatePositions();
-  bool IsAgainstVerticalWall(Particle particle);
-  bool IsAgainstHorizontalWall(Particle particle);
+  bool IsAgainstVerticalWall(const Particle& particle);
+  bool IsAgainstHorizontalWall(const Particle& particle);
+  bool IsCollision(const Particle& particle1, const Particle& particle2);
+  std::pair<glm::vec2, glm::vec2> ComputePostCollisionVelocities(const Particle& p1,
+                                                       const Particle& p2);
 };
 
 }  // namespace idealgas
