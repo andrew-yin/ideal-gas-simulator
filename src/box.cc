@@ -63,5 +63,8 @@ void Box::AddRandomParticle() {
   simulator_.AddParticle(
       Particle(radius, glm::vec2(pos_x, pos_y), glm::vec2(vel_x, vel_y)));
 }
+void Box::Reset() {
+  simulator_.Reset();
+}
 
 }  // namespace idealgas

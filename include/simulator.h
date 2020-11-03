@@ -17,6 +17,8 @@ class Simulator {
   void Update();
   const double kPlaneWidth = 100;
 
+  void Reset();
+
  private:
   std::vector<Particle> particles_;
 

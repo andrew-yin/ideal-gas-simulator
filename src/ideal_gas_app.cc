@@ -1,4 +1,5 @@
 #include <ideal_gas_app.h>
+#include <ctime>
 
 namespace idealgas {
 
@@ -21,8 +22,11 @@ void IdealGasApp::update() {
 }
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
-    case:: ci::app::KeyEvent::KEY_RETURN:
+    case ci::app::KeyEvent::KEY_RETURN:
       box_.AddRandomParticle();
+      break;
+    case ci::app::KeyEvent::KEY_DELETE:
+      box_.Reset();
       break;
     default:
       break;

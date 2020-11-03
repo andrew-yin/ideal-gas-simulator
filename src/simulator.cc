@@ -57,15 +57,17 @@ bool Simulator::IsAgainstVerticalWall(const Particle& particle) {
 }
 
 void Simulator::UpdateParticleCollisions() {
-  for (size_t i = 0; i < particles_.size() - 1; i++) {
-    Particle& particle1 = particles_[i];
-    for (size_t j = i + 1; j < particles_.size(); j++) {
-      Particle& particle2 = particles_[j];
-      if (IsCollision(particle1, particle2)) {
-        std::pair<glm::vec2, glm::vec2> new_velocities =
-            ComputePostCollisionVelocities(particle1, particle2);
-        particle1.SetVelocity(new_velocities.first);
-        particle2.SetVelocity(new_velocities.second);
+  if (particles_.size() > 0) {
+    for (size_t i = 0; i < particles_.size() - 1; i++) {
+      Particle& particle1 = particles_[i];
+      for (size_t j = i + 1; j < particles_.size(); j++) {
+        Particle& particle2 = particles_[j];
+        if (IsCollision(particle1, particle2)) {
+          std::pair<glm::vec2, glm::vec2> new_velocities =
+              ComputePostCollisionVelocities(particle1, particle2);
+          particle1.SetVelocity(new_velocities.first);
+          particle2.SetVelocity(new_velocities.second);
+        }
       }
     }
   }
@@ -103,6 +105,9 @@ std::pair<glm::vec2, glm::vec2> Simulator::ComputePostCollisionVelocities(
                                 (x2 - x1);
 
   return std::pair<glm::vec2, glm::vec2>(v1_prime, v2_prime);
+}
+void Simulator::Reset() {
+  particles_.clear();
 }
 
 }  // namespace idealgas
