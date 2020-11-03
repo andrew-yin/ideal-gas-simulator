@@ -49,7 +49,11 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND SOURCE_FILES src/visualizer/ideal_gas_app.cc src/visualizer/box.cc src/core/particle.cc src/core/simulator.cc)
+list(APPEND CORE_SOURCE_FILES src/core/particle.cc src/core/simulator.cc)
+
+list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES} src/visualizer/ideal_gas_app.cc src/visualizer/box.cc)
+
+list(APPEND TEST_FILES tests/test_main.cc tests/test_particle.cc)
 
 ci_make_app(
         APP_NAME ideal-gas-simulator
@@ -57,3 +61,15 @@ ci_make_app(
         SOURCES apps/cinder_app_main.cc ${SOURCE_FILES}
         INCLUDES include
 )
+
+ci_make_app(
+        APP_NAME ideal-gas-test
+        CINDER_PATH ${CINDER_PATH}
+        SOURCES ${TEST_FILES} ${SOURCE_FILES}
+        INCLUDES include
+        LIBRARIES catch2
+)
+
+if (MSVC)
+    set_property(TARGET ideal-gas-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+endif ()
