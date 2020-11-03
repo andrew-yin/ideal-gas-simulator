@@ -1,5 +1,7 @@
 #include <core/simulator.h>
 
+#include "cinder/Rand.h"
+
 namespace idealgas {
 
 Simulator::Simulator() = default;
@@ -22,20 +24,22 @@ void Simulator::AddRandomParticle() {
   /* Radius will be 1% of the coordinate plane size as a standard */
   double radius = kPlaneWidth / 100;
 
+  /* Seed random number generator */
+  cinder::Rand::randomize();
+
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
-  double pos_x =
-      radius + (double)(rand()) / ((double)(RAND_MAX / (kPlaneWidth - radius)));
-  double pos_y =
-      radius + (double)(rand()) / ((double)(RAND_MAX / (kPlaneWidth - radius)));
+  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  glm::vec2 pos(pos_x, pos_y);
 
   /* Velocity calculated at random such that individual components do not exceed
      half the size of the radius */
-  double vel_x = (double)(rand()) / ((double)(RAND_MAX / (radius * 0.5)));
-  double vel_y = (double)(rand()) / ((double)(RAND_MAX / (radius * 0.5)));
+  double vel_x = cinder::Rand::randFloat(radius * 0.5);
+  double vel_y = cinder::Rand::randFloat(radius * 0.5);
+  glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(
-      Particle(radius, glm::vec2(pos_x, pos_y), glm::vec2(vel_x, vel_y)));
+  particles_.push_back(Particle(radius, pos, vel));
 }
 
 const std::vector<Particle>& Simulator::GetParticles() const {

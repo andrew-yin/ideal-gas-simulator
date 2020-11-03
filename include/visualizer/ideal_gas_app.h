@@ -17,7 +17,6 @@ class IdealGasApp : public ci ::app ::App {
   IdealGasApp();
 
   /** Overriding Cinder methods */
-  void setup() override;
   void draw() override;
   void update() override;
   void keyDown(ci::app::KeyEvent event) override;

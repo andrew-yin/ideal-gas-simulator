@@ -9,11 +9,6 @@ IdealGasApp::IdealGasApp()
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowWidth);
 }
 
-void IdealGasApp::setup() {
-  /* Seed random number generator */
-  srand((unsigned)time(0));
-}
-
 void IdealGasApp::draw() {
   /* Set background to light yellow */
   ci::gl::clear(ci::Color8u(255, 246, 148));
