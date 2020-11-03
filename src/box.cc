@@ -27,7 +27,7 @@ void Box::DrawBox() {
   ci::gl::drawSolidRect(pixel_bounding_box);
 
   ci::gl::color(ci::Color("black"));
-  ci::gl::drawStrokedRect(pixel_bounding_box, 2.0);
+  ci::gl::drawStrokedRect(pixel_bounding_box, 1.0);
 }
 
 void Box::DrawParticles() {
@@ -45,24 +45,26 @@ void Box::DrawParticles() {
     ci::gl::drawStrokedCircle(position, radius, 1.0, -1);
   }
 }
+
 void Box::AddRandomParticle() {
   double radius = 1;
   double pos_x =
       radius +
           (double) (rand()) /
-          ((double) (RAND_MAX / (simulator_.kPlaneWidth - radius)));
+          ((double) (RAND_MAX / ((simulator_.kPlaneWidth - radius)*0.5)));
   double pos_y =
       radius +
       (double)(rand()) /
-          ((double)(RAND_MAX / (simulator_.kPlaneWidth - radius)));
+          ((double)(RAND_MAX / ((simulator_.kPlaneWidth - radius)*0.5)));
   double vel_x =
-      (double)(rand()) / ((double)(RAND_MAX / radius));
+      (double)(rand()) / ((double)(RAND_MAX / (radius*0.8)));
   double vel_y =
-      (double)(rand()) / ((double)(RAND_MAX / radius));
+      (double)(rand()) / ((double)(RAND_MAX / (radius*0.8)));
 
   simulator_.AddParticle(
       Particle(radius, glm::vec2(pos_x, pos_y), glm::vec2(vel_x, vel_y)));
 }
+
 void Box::Reset() {
   simulator_.Reset();
 }

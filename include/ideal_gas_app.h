@@ -20,7 +20,7 @@ class IdealGasApp : public ci ::app ::App {
  private:
   const double kWindowWidth = 800;
   const double kMargin = 100;
-
+  size_t num_particles_;
   Box box_;
 };
 
