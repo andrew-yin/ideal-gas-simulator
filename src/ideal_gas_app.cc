@@ -8,6 +8,7 @@ IdealGasApp::IdealGasApp()
 }
 
 void IdealGasApp::setup() {
+  srand (static_cast <unsigned> (time(0)));
 }
 
 void IdealGasApp::draw() {
@@ -17,6 +18,15 @@ void IdealGasApp::draw() {
 
 void IdealGasApp::update() {
   box_.Update();
+}
+void IdealGasApp::keyDown(ci::app::KeyEvent event) {
+  switch (event.getCode()) {
+    case:: ci::app::KeyEvent::KEY_RETURN:
+      box_.AddRandomParticle();
+      break;
+    default:
+      break;
+  }
 }
 
 }  // namespace idealgas

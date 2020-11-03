@@ -8,7 +8,6 @@ Box::Box(const glm::vec2& top_left_corner, double box_length)
     : top_left_corner_(top_left_corner),
       box_length_(box_length),
       scale_factor_(box_length_ / simulator_.kPlaneWidth) {
-  simulator_.AddParticle(Particle());
 }
 
 void Box::Draw() {
@@ -45,6 +44,24 @@ void Box::DrawParticles() {
     ci::gl::color(ci::Color("black"));
     ci::gl::drawStrokedCircle(position, radius, 1.0, -1);
   }
+}
+void Box::AddRandomParticle() {
+  double radius = 1;
+  double pos_x =
+      radius +
+          (double) (rand()) /
+          ((double) (RAND_MAX / (simulator_.kPlaneWidth - radius)));
+  double pos_y =
+      radius +
+      (double)(rand()) /
+          ((double)(RAND_MAX / (simulator_.kPlaneWidth - radius)));
+  double vel_x =
+      (double)(rand()) / ((double)(RAND_MAX / radius));
+  double vel_y =
+      (double)(rand()) / ((double)(RAND_MAX / radius));
+
+  simulator_.AddParticle(
+      Particle(radius, glm::vec2(pos_x, pos_y), glm::vec2(vel_x, vel_y)));
 }
 
 }  // namespace idealgas

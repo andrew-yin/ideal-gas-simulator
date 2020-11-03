@@ -61,7 +61,6 @@ void Simulator::UpdateParticleCollisions() {
     Particle& particle1 = particles_[i];
     for (size_t j = i + 1; j < particles_.size(); j++) {
       Particle& particle2 = particles_[j];
-
       if (IsCollision(particle1, particle2)) {
         std::pair<glm::vec2, glm::vec2> new_velocities =
             ComputePostCollisionVelocities(particle1, particle2);

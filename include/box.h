@@ -11,6 +11,8 @@ class Box {
   void Draw();
   void Update();
 
+  void AddRandomParticle();
+
  private:
   glm::vec2 top_left_corner_;
   double box_length_;

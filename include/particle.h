@@ -8,7 +8,6 @@ namespace idealgas {
 
 class Particle {
  public:
-  Particle();
   Particle(double radius, const glm::vec2& position,
            const glm::vec2& velocity);
 
@@ -16,7 +15,6 @@ class Particle {
   glm::vec2 GetVelocity() const;
   double GetRadius() const;
 
-  void SetPosition(glm::vec2 position);
   void SetVelocity(glm::vec2 velocity);
 
   void UpdatePosition();

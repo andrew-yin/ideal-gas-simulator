@@ -15,6 +15,8 @@ class IdealGasApp : public ci ::app ::App {
   void draw() override;
   void update() override;
 
+  void keyDown(ci::app::KeyEvent event) override;
+
  private:
   const double kWindowWidth = 800;
   const double kMargin = 100;
