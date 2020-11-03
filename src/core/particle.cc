@@ -1,4 +1,4 @@
-#include <particle.h>
+#include <core/particle.h>
 
 namespace idealgas {
 
@@ -7,27 +7,11 @@ Particle::Particle(double radius, const glm::vec2& position,
     : radius_(radius), position_(position), velocity_(velocity) {
 }
 
-glm::vec2 Particle::GetPosition() const {
-  return position_;
-}
-
-glm::vec2 Particle::GetVelocity() const {
-  return velocity_;
-}
-
-double Particle::GetRadius() const {
-  return radius_;
-}
-
-void Particle::SetVelocity(glm::vec2 velocity) {
-  velocity_ = velocity;
-}
-
 void Particle::UpdatePosition() {
   position_ += velocity_;
 }
 
-void Particle::InvertVelocityComponent(char component) {
+void Particle::InvertVelocityComponent(const char component) {
   switch (component) {
     case 'x':
       velocity_.x = -velocity_.x;
@@ -38,6 +22,22 @@ void Particle::InvertVelocityComponent(char component) {
     default:
       break;
   }
+}
+
+const glm::vec2& Particle::GetPosition() const {
+  return position_;
+}
+
+const glm::vec2& Particle::GetVelocity() const {
+  return velocity_;
+}
+
+double Particle::GetRadius() const {
+  return radius_;
+}
+
+void Particle::SetVelocity(const glm::vec2& velocity) {
+  velocity_ = velocity;
 }
 
 }  // namespace idealgas

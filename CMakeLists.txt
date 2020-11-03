@@ -49,7 +49,7 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND SOURCE_FILES src/ideal_gas_app.cc src/box.cc src/particle.cc src/simulator.cc)
+list(APPEND SOURCE_FILES src/visualizer/ideal_gas_app.cc src/visualizer/box.cc src/core/particle.cc src/core/simulator.cc)
 
 ci_make_app(
         APP_NAME ideal-gas-simulator

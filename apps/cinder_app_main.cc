@@ -1,4 +1,4 @@
-#include "../include/ideal_gas_app.h"
+#include "visualizer/ideal_gas_app.h"
 
 using idealgas::IdealGasApp;
 
