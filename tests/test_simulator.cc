@@ -346,4 +346,38 @@ TEST_CASE("Update functionality") {
     REQUIRE(particles[0].GetVelocity() == p1.GetVelocity());
     REQUIRE(particles[1].GetVelocity() == p2.GetVelocity());
   }
+
+  /************************************************************
+   * Test to ensure that particle positions are being updated *
+   ************************************************************/
+  SECTION("A singleton particle's position is updated correctly") {
+    Particle p1(1, glm::vec2(22, 53), glm::vec2(2, 1));
+    simulator.AddParticle(p1);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetPosition() == p1.GetPosition() + p1.GetVelocity());
+  }
+
+  SECTION("Multiple particles' positions are updated correctly") {
+    std::vector<Particle> org_particles;
+    org_particles.push_back(Particle(1, glm::vec2(22, 53), glm::vec2(2, 1)));
+    org_particles.push_back(Particle(1, glm::vec2(3, 7), glm::vec2(7, 4)));
+    org_particles.push_back(Particle(1, glm::vec2(22, 3.4), glm::vec2(-2, 10)));
+    org_particles.push_back(Particle(1, glm::vec2(2.2, 9), glm::vec2(5, -1)));
+    org_particles.push_back(Particle(1, glm::vec2(7, 3), glm::vec2(2.1, -8.3)));
+
+    for (const Particle& p : org_particles) {
+      simulator.AddParticle(p);
+    }
+    simulator.Update();
+
+    /* Require all particles were updated properly */
+    std::vector<Particle> particles = simulator.GetParticles();
+    for (size_t i = 0; i < org_particles.size(); i++) {
+      REQUIRE(particles[i].GetPosition() ==
+              org_particles[i].GetPosition() + org_particles[i].GetVelocity());
+    }
+  }
 }
