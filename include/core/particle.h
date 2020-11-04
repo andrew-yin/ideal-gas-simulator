@@ -37,6 +37,8 @@ class Particle {
    */
   void InvertVelocityComponent(const char component);
 
+  bool operator==(const Particle& other) const;
+
   /** Necessary getters and setters */
   const glm::vec2& GetPosition() const;
   const glm::vec2& GetVelocity() const;

@@ -27,11 +27,11 @@ TEST_CASE("Constructor") {
   }
 
   SECTION("Test position is held properly") {
-    REQUIRE(IsVectorsSame(pos, p.GetPosition()));
+    REQUIRE(pos == p.GetPosition());
   }
 
   SECTION("Test velocity is held properly") {
-    REQUIRE(IsVectorsSame(vel, p.GetVelocity()));
+    REQUIRE(vel == p.GetVelocity());
   }
 }
 
@@ -43,28 +43,28 @@ TEST_CASE("UpdatePosition()") {
     glm::vec2 vel(0, 0);
     Particle p(rad, pos, vel);
     p.UpdatePosition();
-    REQUIRE(IsVectorsSame(pos, p.GetPosition()));
+    REQUIRE(pos == p.GetPosition());
   }
 
   SECTION("Velocity x component is zero") {
     glm::vec2 vel(0, -2);
     Particle p(rad, pos, vel);
     p.UpdatePosition();
-    REQUIRE(IsVectorsSame(pos + vel, p.GetPosition()));
+    REQUIRE(pos + vel == p.GetPosition());
   }
 
   SECTION("Velocity y component is zero") {
     glm::vec2 vel(3.5, 0);
     Particle p(rad, pos, vel);
     p.UpdatePosition();
-    REQUIRE(IsVectorsSame(pos + vel, p.GetPosition()));
+    REQUIRE(pos + vel == p.GetPosition());
   }
 
   SECTION("Average case") {
     glm::vec2 vel(0.5, -7);
     Particle p(rad, pos, vel);
     p.UpdatePosition();
-    REQUIRE(IsVectorsSame(pos + vel, p.GetPosition()));
+    REQUIRE(pos + vel == p.GetPosition());
   }
 
   SECTION("Multiple calls of UpdatePosition()") {
@@ -76,7 +76,7 @@ TEST_CASE("UpdatePosition()") {
     for (size_t i = 0; i < n; i++) {
       p.UpdatePosition();
     }
-    REQUIRE(IsVectorsSame(pos + ((float) n)*vel, p.GetPosition()));
+    REQUIRE(pos + ((float) n)*vel == p.GetPosition());
   }
 }
 
@@ -98,10 +98,10 @@ TEST_CASE("InvertVelocityComponent()") {
 
     /* Inverting both x and y returns zero-vector either way */
     p.InvertVelocityComponent('x');
-    REQUIRE(IsVectorsSame(vel, p.GetVelocity()));
+    REQUIRE(vel == p.GetVelocity());
 
     p.InvertVelocityComponent('y');
-    REQUIRE(IsVectorsSame(vel, p.GetVelocity()));
+    REQUIRE(vel == p.GetVelocity());
   }
 
   SECTION("Velocity x component is zero") {
@@ -110,10 +110,10 @@ TEST_CASE("InvertVelocityComponent()") {
 
     p.InvertVelocityComponent('x');
     /* Velocity should not change since x component is zero */
-    REQUIRE(IsVectorsSame(vel, p.GetVelocity()));
+    REQUIRE(vel == p.GetVelocity());
 
     p.InvertVelocityComponent('y');
-    REQUIRE(IsVectorsSame(glm::vec2(0, 2), p.GetVelocity()));
+    REQUIRE(glm::vec2(0, 2) == p.GetVelocity());
   }
 
   SECTION("Velocity y component is zero") {
@@ -122,10 +122,10 @@ TEST_CASE("InvertVelocityComponent()") {
 
     p.InvertVelocityComponent('y');
     /* Velocity should not change since y component is zero */
-    REQUIRE(IsVectorsSame(vel, p.GetVelocity()));
+    REQUIRE(vel == p.GetVelocity());
 
     p.InvertVelocityComponent('x');
-    REQUIRE(IsVectorsSame(glm::vec2(-3.5, 0), p.GetVelocity()));
+    REQUIRE(glm::vec2(-3.5, 0) == p.GetVelocity());
   }
 
   SECTION("Average case") {
@@ -133,9 +133,9 @@ TEST_CASE("InvertVelocityComponent()") {
     Particle p(rad, pos, vel);
 
     p.InvertVelocityComponent('x');
-    REQUIRE(IsVectorsSame(glm::vec2(-0.5, -7), p.GetVelocity()));
+    REQUIRE(glm::vec2(-0.5, -7) == p.GetVelocity());
 
     p.InvertVelocityComponent('y');
-    REQUIRE(IsVectorsSame(glm::vec2(-0.5, 7), p.GetVelocity()));
+    REQUIRE(glm::vec2(-0.5, 7) == p.GetVelocity());
   }
 }
