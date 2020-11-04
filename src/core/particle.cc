@@ -39,6 +39,7 @@ double Particle::GetRadius() const {
 void Particle::SetVelocity(const glm::vec2& velocity) {
   velocity_ = velocity;
 }
+
 bool Particle::operator==(const Particle& other) const {
   return (this->GetRadius() == other.GetRadius()) &&
          (this->GetPosition() == other.GetPosition()) &&
