@@ -4,7 +4,9 @@
 
 namespace idealgas {
 
-Simulator::Simulator() = default;
+Simulator::Simulator() {
+  cinder::Rand::randomize();
+};
 
 void Simulator::Update() {
   UpdateWallCollisions();
@@ -25,7 +27,6 @@ void Simulator::AddRandomParticle() {
   double radius = kPlaneWidth / 100;
 
   /* Seed random number generator */
-  cinder::Rand::randomize();
 
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
