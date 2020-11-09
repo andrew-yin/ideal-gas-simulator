@@ -2,9 +2,9 @@
 
 namespace idealgas {
 
-Particle::Particle(double radius, const glm::vec2& position,
+Particle::Particle(double radius, double mass, const glm::vec2& position,
                    const glm::vec2& velocity)
-    : radius_(radius), position_(position), velocity_(velocity) {
+    : radius_(radius), mass_(mass), position_(position), velocity_(velocity) {
 }
 
 void Particle::UpdatePosition() {
@@ -36,12 +36,17 @@ double Particle::GetRadius() const {
   return radius_;
 }
 
+double Particle::GetMass() const {
+  return mass_;
+}
+
 void Particle::SetVelocity(const glm::vec2& velocity) {
   velocity_ = velocity;
 }
 
 bool Particle::operator==(const Particle& other) const {
   return (this->GetRadius() == other.GetRadius()) &&
+         (this->GetMass() == other.GetMass()) &&
          (this->GetPosition() == other.GetPosition()) &&
          (this->GetVelocity() == other.GetVelocity());
 }

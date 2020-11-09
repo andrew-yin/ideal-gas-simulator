@@ -25,8 +25,7 @@ void Simulator::AddParticle(const Particle& particle) {
 void Simulator::AddRandomParticle() {
   /* Radius will be 1% of the coordinate plane size as a standard */
   double radius = kPlaneWidth / 100;
-
-  /* Seed random number generator */
+  double mass = 1;
 
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
@@ -40,7 +39,7 @@ void Simulator::AddRandomParticle() {
   double vel_y = cinder::Rand::randFloat(radius * 0.5);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, pos, vel));
+  particles_.push_back(Particle(radius, mass, pos, vel));
 }
 
 const std::vector<Particle>& Simulator::GetParticles() const {
@@ -126,16 +125,18 @@ bool Simulator::IsCollision(const Particle& p1, const Particle& p2) const {
 std::pair<glm::vec2, glm::vec2> Simulator::ComputePostCollisionVelocities(
     const Particle& p1, const Particle& p2) const {
   glm::vec2 x1 = p1.GetPosition();
-  glm::vec2 x2 = p2.GetPosition();
   glm::vec2 v1 = p1.GetVelocity();
+  glm::vec2 x2 = p2.GetPosition();
   glm::vec2 v2 = p2.GetVelocity();
+  float m1 = p1.GetMass();
+  float m2 = p2.GetMass();
 
-  glm::vec2 v1_prime = v1 - (glm::dot(v1 - v2, x1 - x2)) /
-                                (glm::length(x1 - x2) * glm::length(x1 - x2)) *
+  glm::vec2 v1_prime = v1 - ((2 * m2)/(m1 + m2) * (glm::dot(v1 - v2, x1 - x2)) /
+                                (glm::length(x1 - x2) * glm::length(x1 - x2))) *
                                 (x1 - x2);
-  glm::vec2 v2_prime = v2 - (glm::dot(v2 - v1, x2 - x1)) /
+  glm::vec2 v2_prime = v2 - ((2 * m1)/(m1 + m2) * (glm::dot(v2 - v1, x2 - x1)) /
                                 (glm::length(x2 - x1) * glm::length(x2 - x1)) *
-                                (x2 - x1);
+                                (x2 - x1));
 
   return std::pair<glm::vec2, glm::vec2>(v1_prime, v2_prime);
 }
