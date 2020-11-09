@@ -15,7 +15,8 @@ void IdealGasApp::draw() {
 
   /* Draw text instructions */
   ci::gl::drawStringCentered(
-      "Press Enter to add a random particle. Press Backspace to empty the box.",
+      "Press 1, 2, or 3 to add a random small, medium, or large particle, "
+      "respectively. Press Backspace to empty the box.",
       glm::vec2(kWindowWidth / 2, kMargin / 2), ci::Color("black"));
 
   ci::gl::drawStringCentered(

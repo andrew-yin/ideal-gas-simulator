@@ -28,8 +28,17 @@ class Simulator {
   /** Adds the specified particle to the simulation */
   void AddParticle(const Particle& particle);
 
-  /** Adds a particle with random position and velocity to the simulation */
-  void AddRandomParticle();
+  /**
+   * Methods to add a particle with specified size and random position/velocity
+   * to the simulation
+   */
+
+  /** Mass and radius both 1% of simulator width */
+  void AddRandomSmallParticle();
+  /** Mass 2%, radius 1.5% of simulator width */
+  void AddRandomMediumParticle();
+  /** Mass 4%, radius 2% of simulator width */
+  void AddRandomLargeParticle();
 
   const std::vector<Particle>& GetParticles() const;
 

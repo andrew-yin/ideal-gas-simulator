@@ -21,15 +21,21 @@ void Box::Update() {
 
 void Box::HandleKeyEvent(cinder::app::KeyEvent event) {
   switch (event.getCode()) {
-    case ci::app::KeyEvent::KEY_RETURN:
-      simulator_.AddRandomParticle();
+    case ci::app::KeyEvent::KEY_1:
+      simulator_.AddRandomSmallParticle();
+      num_particles_++;
+      break;
+    case ci::app::KeyEvent::KEY_2:
+      simulator_.AddRandomMediumParticle();
+      num_particles_++;
+      break;
+    case ci::app::KeyEvent::KEY_3:
+      simulator_.AddRandomLargeParticle();
       num_particles_++;
       break;
     case ci::app::KeyEvent::KEY_DELETE:
       simulator_.Reset();
       num_particles_ = 0;
-      break;
-    default:
       break;
   }
 }

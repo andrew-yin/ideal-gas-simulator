@@ -22,10 +22,9 @@ void Simulator::AddParticle(const Particle& particle) {
   particles_.push_back(particle);
 }
 
-void Simulator::AddRandomParticle() {
-  /* Radius will be 1% of the coordinate plane size as a standard */
-  double radius = kPlaneWidth / 100;
-  double mass = 1;
+void Simulator::AddRandomSmallParticle() {
+  double radius = kPlaneWidth/100;
+  double mass = kPlaneWidth/100;
 
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
@@ -33,9 +32,40 @@ void Simulator::AddRandomParticle() {
   double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
   glm::vec2 pos(pos_x, pos_y);
 
-  /* Velocity calculated at random such that individual components do not exceed
-     half the size of the radius */
+  /* Velocity calculated at random but maximum scaled down based on radius */
   double scale_factor = 0.5;
+  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
+  glm::vec2 vel(vel_x, vel_y);
+
+  particles_.push_back(Particle(radius, mass, pos, vel));
+}
+
+void Simulator::AddRandomMediumParticle() {
+  double radius = kPlaneWidth/100 * 1.25;
+  double mass = kPlaneWidth/100 * 2;
+
+  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  glm::vec2 pos(pos_x, pos_y);
+
+  double scale_factor = 0.375;
+  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
+  glm::vec2 vel(vel_x, vel_y);
+
+  particles_.push_back(Particle(radius, mass, pos, vel));
+}
+
+void Simulator::AddRandomLargeParticle() {
+  double radius = kPlaneWidth/100 * 1.5;
+  double mass = kPlaneWidth/100 * 3;
+
+  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  glm::vec2 pos(pos_x, pos_y);
+
+  double scale_factor = 0.25;
   double vel_x = cinder::Rand::randFloat(radius * scale_factor);
   double vel_y = cinder::Rand::randFloat(radius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
@@ -136,12 +166,13 @@ std::pair<glm::vec2, glm::vec2> Simulator::ComputePostCollisionVelocities(
   float m1 = p1.GetMass();
   float m2 = p2.GetMass();
 
-  glm::vec2 v1_prime = v1 - ((2 * m2)/(m1 + m2) * (glm::dot(v1 - v2, x1 - x2)) /
-                                (glm::length(x1 - x2) * glm::length(x1 - x2))) *
-                                (x1 - x2);
-  glm::vec2 v2_prime = v2 - ((2 * m1)/(m1 + m2) * (glm::dot(v2 - v1, x2 - x1)) /
-                                (glm::length(x2 - x1) * glm::length(x2 - x1)) *
-                                (x2 - x1));
+  glm::vec2 v1_prime =
+      v1 - ((2 * m2) / (m1 + m2) * (glm::dot(v1 - v2, x1 - x2)) /
+            (glm::length(x1 - x2) * glm::length(x1 - x2))) *
+               (x1 - x2);
+  glm::vec2 v2_prime =
+      v2 - ((2 * m1) / (m1 + m2) * (glm::dot(v2 - v1, x2 - x1)) /
+            (glm::length(x2 - x1) * glm::length(x2 - x1)) * (x2 - x1));
 
   return std::pair<glm::vec2, glm::vec2>(v1_prime, v2_prime);
 }
