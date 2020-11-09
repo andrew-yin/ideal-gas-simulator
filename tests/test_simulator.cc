@@ -8,7 +8,7 @@ TEST_CASE("AddParticle functionality") {
   Simulator simulator;
 
   SECTION("Add one particle") {
-    Particle p(1, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
     simulator.AddParticle(p);
     std::vector<Particle> particles = simulator.GetParticles();
 
@@ -16,8 +16,8 @@ TEST_CASE("AddParticle functionality") {
   }
 
   SECTION("Add two particles") {
-    Particle p1(1, glm::vec2(1, 1), glm::vec2(1, 1));
-    Particle p2(2, glm::vec2(2, 2), glm::vec2(2, 2));
+    Particle p1(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(2, 1, glm::vec2(2, 2), glm::vec2(2, 2));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
     std::vector<Particle> particles = simulator.GetParticles();
@@ -92,7 +92,7 @@ TEST_CASE("Update functionality") {
 
   /* X-component should invert signs */
   SECTION("Particle moves towards and collides with left wall") {
-    Particle particle(1, glm::vec2(1, 50), glm::vec2(-1, 5));
+    Particle particle(1, 1, glm::vec2(1, 50), glm::vec2(-1, 5));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -102,7 +102,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves towards and collides with right wall") {
-    Particle particle(1, glm::vec2(99, 50), glm::vec2(2, -7));
+    Particle particle(1, 1, glm::vec2(99, 50), glm::vec2(2, -7));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -113,7 +113,7 @@ TEST_CASE("Update functionality") {
 
   /* Y-component should invert signs */
   SECTION("Particle moves towards and collides with top wall") {
-    Particle particle(1, glm::vec2(25, 99), glm::vec2(-1, 9));
+    Particle particle(1, 1, glm::vec2(25, 99), glm::vec2(-1, 9));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -123,7 +123,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves towards and collides with bottom wall") {
-    Particle particle(1, glm::vec2(34, 0.75), glm::vec2(-5, -3));
+    Particle particle(1, 1, glm::vec2(34, 0.75), glm::vec2(-5, -3));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -134,7 +134,7 @@ TEST_CASE("Update functionality") {
 
   /* Both components should invert signs */
   SECTION("Particle moves towards and collides with top-left corner") {
-    Particle particle(1, glm::vec2(1, 99), glm::vec2(-1, 1));
+    Particle particle(1, 1, glm::vec2(1, 99), glm::vec2(-1, 1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -144,7 +144,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves towards and collides with top-right corner") {
-    Particle particle(1, glm::vec2(99, 99), glm::vec2(1, 1));
+    Particle particle(1, 1, glm::vec2(99, 99), glm::vec2(1, 1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -154,7 +154,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves towards and collides with bottom-left corner") {
-    Particle particle(1, glm::vec2(1, 1), glm::vec2(-1, -1));
+    Particle particle(1, 1, glm::vec2(1, 1), glm::vec2(-1, -1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -164,7 +164,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves towards and collides with bottom-right corner") {
-    Particle particle(1, glm::vec2(99, 1), glm::vec2(1, -1));
+    Particle particle(1, 1, glm::vec2(99, 1), glm::vec2(1, -1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -178,7 +178,7 @@ TEST_CASE("Update functionality") {
    * remain the same for all
    */
   SECTION("Particle moves away but in contact with left wall") {
-    Particle particle(1, glm::vec2(1, 50), glm::vec2(1, 5));
+    Particle particle(1, 1, glm::vec2(1, 50), glm::vec2(1, 5));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -188,7 +188,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with right wall") {
-    Particle particle(1, glm::vec2(99, 50), glm::vec2(-2, -7));
+    Particle particle(1, 1, glm::vec2(99, 50), glm::vec2(-2, -7));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -198,7 +198,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with top wall") {
-    Particle particle(1, glm::vec2(25, 99), glm::vec2(-1, -9));
+    Particle particle(1, 1, glm::vec2(25, 99), glm::vec2(-1, -9));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -208,7 +208,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with bottom wall") {
-    Particle particle(1, glm::vec2(34, 0.75), glm::vec2(-5, 3));
+    Particle particle(1, 1, glm::vec2(34, 0.75), glm::vec2(-5, 3));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -218,7 +218,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with top-left corner") {
-    Particle particle(1, glm::vec2(1, 99), glm::vec2(1, -1));
+    Particle particle(1, 1, glm::vec2(1, 99), glm::vec2(1, -1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -228,7 +228,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with top-right wall") {
-    Particle particle(1, glm::vec2(99, 99), glm::vec2(-1, -1));
+    Particle particle(1, 1, glm::vec2(99, 99), glm::vec2(-1, -1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -238,7 +238,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with bottom-left wall") {
-    Particle particle(1, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle particle(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -248,7 +248,7 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particle moves away but in contact with bottom-right wall") {
-    Particle particle(1, glm::vec2(99, 1), glm::vec2(-1, 1));
+    Particle particle(1, 1, glm::vec2(99, 1), glm::vec2(-1, 1));
     simulator.AddParticle(particle);
 
     simulator.Update();
@@ -263,8 +263,8 @@ TEST_CASE("Update functionality") {
 
   /* Particles should swap velocities in elastic collision */
   SECTION("Particles moving directly towards each other") {
-    Particle p1(1, glm::vec2(30, 51), glm::vec2(0, 1));
-    Particle p2(1, glm::vec2(30, 53), glm::vec2(0, -1));
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(0, 1));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(0, -1));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -276,8 +276,8 @@ TEST_CASE("Update functionality") {
   }
 
   SECTION("Particles moving in the exact same direction") {
-    Particle p1(1, glm::vec2(22, 53), glm::vec2(5, 0));
-    Particle p2(1, glm::vec2(24, 53), glm::vec2(2, 0));
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(5, 0));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(2, 0));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -290,8 +290,8 @@ TEST_CASE("Update functionality") {
 
   /* Particles should swap y-components */
   SECTION("Particles moving towards each other in a glancing collision") {
-    Particle p1(1, glm::vec2(30, 51), glm::vec2(1, 4));
-    Particle p2(1, glm::vec2(30, 53), glm::vec2(-2, -5));
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(1, 4));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(-2, -5));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -304,8 +304,8 @@ TEST_CASE("Update functionality") {
 
   /* Particles should swap x-components */
   SECTION("Particles moving in the same direction in a glancing collision") {
-    Particle p1(1, glm::vec2(22, 53), glm::vec2(7, 1));
-    Particle p2(1, glm::vec2(24, 53), glm::vec2(3, -3));
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(7, 1));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(3, -3));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -318,8 +318,8 @@ TEST_CASE("Update functionality") {
 
   /* Particle velocities should not change */
   SECTION("Particles in contact but moving away from each other") {
-    Particle p1(1, glm::vec2(30, 51), glm::vec2(0, -3));
-    Particle p2(1, glm::vec2(30, 53), glm::vec2(0, 4));
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(0, -3));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(0, 4));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -335,8 +335,8 @@ TEST_CASE("Update functionality") {
      * This edge case happens when the particle "behind" the other particle is
      * traveling slower, so they will never be in contact again
      */
-    Particle p1(1, glm::vec2(22, 53), glm::vec2(2, 1));
-    Particle p2(1, glm::vec2(24, 53), glm::vec2(7, -3));
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(2, 1));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(7, -3));
     simulator.AddParticle(p1);
     simulator.AddParticle(p2);
 
@@ -351,7 +351,7 @@ TEST_CASE("Update functionality") {
    * Test to ensure that particle positions are being updated *
    ************************************************************/
   SECTION("A singleton particle's position is updated correctly") {
-    Particle p1(1, glm::vec2(22, 53), glm::vec2(2, 1));
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(2, 1));
     simulator.AddParticle(p1);
 
     simulator.Update();
@@ -362,11 +362,11 @@ TEST_CASE("Update functionality") {
 
   SECTION("Multiple particles' positions are updated correctly") {
     std::vector<Particle> org_particles;
-    org_particles.push_back(Particle(1, glm::vec2(22, 53), glm::vec2(2, 1)));
-    org_particles.push_back(Particle(1, glm::vec2(3, 7), glm::vec2(7, 4)));
-    org_particles.push_back(Particle(1, glm::vec2(22, 3.4), glm::vec2(-2, 10)));
-    org_particles.push_back(Particle(1, glm::vec2(2.2, 9), glm::vec2(5, -1)));
-    org_particles.push_back(Particle(1, glm::vec2(7, 3), glm::vec2(2.1, -8.3)));
+    org_particles.push_back(Particle(1, 1, glm::vec2(22, 53), glm::vec2(2, 1)));
+    org_particles.push_back(Particle(1, 1, glm::vec2(3, 7), glm::vec2(7, 4)));
+    org_particles.push_back(Particle(1, 1, glm::vec2(22, 3.4), glm::vec2(-2, 10)));
+    org_particles.push_back(Particle(1, 1, glm::vec2(2.2, 9), glm::vec2(5, -1)));
+    org_particles.push_back(Particle(1, 1, glm::vec2(7, 3), glm::vec2(2.1, -8.3)));
 
     for (const Particle& p : org_particles) {
       simulator.AddParticle(p);
