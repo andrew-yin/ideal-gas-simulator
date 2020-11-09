@@ -27,17 +27,6 @@ class Particle {
    */
   void UpdatePosition();
 
-  /**
-   * Reverses the sign of the specified component of the particle's velocity.
-   * Used when the particle is colliding with a wall. If the component specified
-   * is not a valid component of velocity, the particle's velocity will remain
-   * the same.
-   *
-   * @param component  The component (e.g. x or y) of velocity whose sign is to
-   *                   be inverted.
-   */
-  void InvertVelocityComponent(const char component);
-
   bool operator==(const Particle& other) const;
 
   /** Necessary getters and setters */

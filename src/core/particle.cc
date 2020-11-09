@@ -11,19 +11,6 @@ void Particle::UpdatePosition() {
   position_ += velocity_;
 }
 
-void Particle::InvertVelocityComponent(const char component) {
-  switch (component) {
-    case 'x':
-      velocity_.x = -velocity_.x;
-      break;
-    case 'y':
-      velocity_.y = -velocity_.y;
-      break;
-    default:
-      break;
-  }
-}
-
 const glm::vec2& Particle::GetPosition() const {
   return position_;
 }

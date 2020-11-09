@@ -35,8 +35,9 @@ void Simulator::AddRandomParticle() {
 
   /* Velocity calculated at random such that individual components do not exceed
      half the size of the radius */
-  double vel_x = cinder::Rand::randFloat(radius * 0.5);
-  double vel_y = cinder::Rand::randFloat(radius * 0.5);
+  double scale_factor = 0.5;
+  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
   particles_.push_back(Particle(radius, mass, pos, vel));
@@ -49,11 +50,15 @@ const std::vector<Particle>& Simulator::GetParticles() const {
 void Simulator::UpdateWallCollisions() {
   for (Particle& particle : particles_) {
     if (IsAgainstHorizontalWall(particle)) {
-      particle.InvertVelocityComponent('x');
+      glm::vec2 old_vel = particle.GetVelocity();
+      glm::vec2 new_vel(-old_vel.x, old_vel.y);
+      particle.SetVelocity(new_vel);
     }
 
     if (IsAgainstVerticalWall(particle)) {
-      particle.InvertVelocityComponent('y');
+      glm::vec2 old_vel = particle.GetVelocity();
+      glm::vec2 new_vel(old_vel.x, -old_vel.y);
+      particle.SetVelocity(new_vel);
     }
   }
 }
