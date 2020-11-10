@@ -18,8 +18,14 @@ class Particle {
    * @param mass      The mass of the particle.
    * @param position  A 2D vector representing the particle's current position.
    * @param velocity  A 2D vector representing the particle's current velocity.
+   * @param color     A Cinder Color object representing the particle's color.
    */
-  Particle(double radius, double mass, const glm::vec2& position, const glm::vec2& velocity);
+  Particle(double radius, double mass, const glm::vec2& position,
+           const glm::vec2& velocity, const ci::Color& color);
+
+  /** Constructor for when color is not needed, e.g. not using Cinder */
+  Particle(double radius, double mass, const glm::vec2& position,
+           const glm::vec2& velocity);
 
   /**
    * Updates the position of the object by a unit of time based on its current
@@ -34,6 +40,7 @@ class Particle {
   const glm::vec2& GetVelocity() const;
   double GetRadius() const;
   double GetMass() const;
+  const ci::Color& GetColor() const;
   void SetVelocity(const glm::vec2& velocity);
 
  private:
@@ -41,6 +48,7 @@ class Particle {
   double mass_;
   glm::vec2 position_;
   glm::vec2 velocity_;
+  ci::Color color_;
 };
 
 }  // namespace idealgas

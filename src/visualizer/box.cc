@@ -71,7 +71,7 @@ void Box::DrawParticles() const {
     position *= scale_factor;
     position += top_left_corner_;
 
-    ci::gl::color(ci::Color("red"));
+    ci::gl::color(particle.GetColor());
     ci::gl::drawSolidCircle(position, radius);
     ci::gl::color(ci::Color("black"));
     ci::gl::drawStrokedCircle(position, radius, 1.0, -1);

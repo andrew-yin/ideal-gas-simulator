@@ -25,6 +25,7 @@ void Simulator::AddParticle(const Particle& particle) {
 void Simulator::AddRandomSmallParticle() {
   double radius = kPlaneWidth/100;
   double mass = kPlaneWidth/100;
+  ci::Color color("red");
 
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
@@ -38,12 +39,13 @@ void Simulator::AddRandomSmallParticle() {
   double vel_y = cinder::Rand::randFloat(radius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel));
+  particles_.push_back(Particle(radius, mass, pos, vel, color));
 }
 
 void Simulator::AddRandomMediumParticle() {
   double radius = kPlaneWidth/100 * 1.25;
   double mass = kPlaneWidth/100 * 2;
+  ci::Color color("blue");
 
   double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
   double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
@@ -54,12 +56,13 @@ void Simulator::AddRandomMediumParticle() {
   double vel_y = cinder::Rand::randFloat(radius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel));
+  particles_.push_back(Particle(radius, mass, pos, vel, color));
 }
 
 void Simulator::AddRandomLargeParticle() {
   double radius = kPlaneWidth/100 * 1.5;
   double mass = kPlaneWidth/100 * 3;
+  ci::Color color("green");
 
   double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
   double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
@@ -70,7 +73,7 @@ void Simulator::AddRandomLargeParticle() {
   double vel_y = cinder::Rand::randFloat(radius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel));
+  particles_.push_back(Particle(radius, mass, pos, vel, color));
 }
 
 const std::vector<Particle>& Simulator::GetParticles() const {

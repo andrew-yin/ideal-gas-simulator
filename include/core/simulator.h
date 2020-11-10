@@ -37,7 +37,7 @@ class Simulator {
   void AddRandomSmallParticle();
   /** Mass 2%, radius 1.5% of simulator width */
   void AddRandomMediumParticle();
-  /** Mass 4%, radius 2% of simulator width */
+  /** Mass 3%, radius 2% of simulator width */
   void AddRandomLargeParticle();
 
   const std::vector<Particle>& GetParticles() const;
