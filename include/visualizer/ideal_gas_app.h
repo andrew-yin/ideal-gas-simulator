@@ -3,7 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "histogram.h"
+#include "histograms.h"
 #include "visualizer/box.h"
 
 namespace idealgas {
@@ -36,10 +36,7 @@ class IdealGasApp : public ci ::app ::App {
 
   Simulator simulator_;
   Box box_;
-  /** Histograms to display speed data about the differently-sized particles */
-  Histogram small_histogram_;
-  Histogram medium_histogram_;
-  Histogram large_histogram_;
+  Histograms histograms_;
 };
 
 }  // namespace idealgas

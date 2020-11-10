@@ -4,13 +4,12 @@ namespace idealgas {
 
 IdealGasApp::IdealGasApp()
     : box_(simulator_, glm::vec2(kMargin, kMargin), kBoxWidth),
-      small_histogram_(glm::vec2(kWindowHeight, kMargin), kBoxWidth / 2,
-                       kBoxWidth / 4),
-      medium_histogram_(glm::vec2(kWindowHeight, 2 * kMargin + kBoxWidth / 4),
-                        kBoxWidth / 2, kBoxWidth / 4),
-      large_histogram_(
-          glm::vec2(kWindowHeight, 3 * kMargin + 2 * kBoxWidth / 4),
-          kBoxWidth / 2, kBoxWidth / 4) {
+      histograms_(simulator_,
+                  std::vector<glm::vec2>(
+                      {glm::vec2(kWindowHeight, kMargin),
+                      glm::vec2(kWindowHeight, 2 * kMargin + kBoxWidth / 4),
+                      glm::vec2(kWindowHeight, 3 * kMargin + 2 * kBoxWidth / 4)}),
+                  kBoxWidth / 2, kBoxWidth / 4) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
@@ -30,9 +29,7 @@ void IdealGasApp::draw() {
       ci::Color("blue"));
 
   box_.Draw();
-  small_histogram_.Draw();
-  medium_histogram_.Draw();
-  large_histogram_.Draw();
+  histograms_.Draw();
 }
 
 void IdealGasApp::update() {
