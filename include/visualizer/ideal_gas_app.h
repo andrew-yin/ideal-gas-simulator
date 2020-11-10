@@ -3,6 +3,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "histogram.h"
 #include "visualizer/box.h"
 
 namespace idealgas {
@@ -23,12 +24,20 @@ class IdealGasApp : public ci ::app ::App {
 
  private:
   /** The width of the Cinder application window in pixels */
-  const double kWindowWidth = 800;
+  const double kWindowWidth = 1500;
+  const double kWindowHeight = 1000;
 
-  /** The margin between the edge of the Cinder application window and the box
-      containing the gas particles */
+  /** The margin between the edge of the Cinder application window and the
+   *  box/histograms */
   const double kMargin = 100;
+
+  /** The width of the box holding the particles in pixels */
+  const double kBoxWidth = kWindowHeight - 2 * kMargin;
+
   Box box_;
+  Histogram small_histogram_;
+  Histogram medium_histogram_;
+  Histogram large_histogram_;
 };
 
 }  // namespace idealgas

@@ -1,7 +1,5 @@
 #include <visualizer/box.h>
 
-using glm::vec2;
-
 namespace idealgas {
 
 Box::Box(const glm::vec2& top_left_corner, double box_length)
@@ -45,7 +43,8 @@ const size_t& Box::GetNumParticles() const {
 }
 
 void Box::DrawBox() const {
-  vec2 pixel_bottom_right = top_left_corner_ + vec2(box_length_, box_length_);
+  glm::vec2 pixel_bottom_right =
+      top_left_corner_ + glm::vec2(box_length_, box_length_);
   ci::Rectf pixel_bounding_box(top_left_corner_, pixel_bottom_right);
 
   ci::gl::color(ci::Color("white"));
