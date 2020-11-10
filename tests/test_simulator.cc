@@ -31,15 +31,15 @@ TEST_CASE("AddRandomParticle functionality") {
   Simulator simulator;
 
   SECTION("Add a single random particle") {
-    simulator.AddRandomParticle();
+    simulator.AddRandomSmallParticle();
 
     std::vector<Particle> particles = simulator.GetParticles();
     REQUIRE(particles.size() == 1);
   }
 
   SECTION("Add two random particles") {
-    simulator.AddRandomParticle();
-    simulator.AddRandomParticle();
+    simulator.AddRandomSmallParticle();
+    simulator.AddRandomSmallParticle();
 
     std::vector<Particle> particles = simulator.GetParticles();
     REQUIRE(particles.size() == 2);
@@ -48,7 +48,7 @@ TEST_CASE("AddRandomParticle functionality") {
   SECTION("Add multiple random particles") {
     size_t n = 10;
     for (size_t i = 0; i < 10; i++) {
-      simulator.AddRandomParticle();
+      simulator.AddRandomSmallParticle();
     }
 
     std::vector<Particle> particles = simulator.GetParticles();
@@ -69,14 +69,14 @@ TEST_CASE("Reset functionality") {
   }
 
   SECTION("Simulator with one particle") {
-    simulator.AddRandomParticle();
+    simulator.AddRandomSmallParticle();
     simulator.Reset();
     REQUIRE(simulator.GetParticles().empty());
   }
 
   SECTION("Simulator with multiple particles") {
     for (size_t i = 0; i < 10; i++) {
-      simulator.AddRandomParticle();
+      simulator.AddRandomSmallParticle();
     }
     simulator.Reset();
     REQUIRE(simulator.GetParticles().empty());
@@ -364,9 +364,12 @@ TEST_CASE("Update functionality") {
     std::vector<Particle> org_particles;
     org_particles.push_back(Particle(1, 1, glm::vec2(22, 53), glm::vec2(2, 1)));
     org_particles.push_back(Particle(1, 1, glm::vec2(3, 7), glm::vec2(7, 4)));
-    org_particles.push_back(Particle(1, 1, glm::vec2(22, 3.4), glm::vec2(-2, 10)));
-    org_particles.push_back(Particle(1, 1, glm::vec2(2.2, 9), glm::vec2(5, -1)));
-    org_particles.push_back(Particle(1, 1, glm::vec2(7, 3), glm::vec2(2.1, -8.3)));
+    org_particles.push_back(
+        Particle(1, 1, glm::vec2(22, 3.4), glm::vec2(-2, 10)));
+    org_particles.push_back(
+        Particle(1, 1, glm::vec2(2.2, 9), glm::vec2(5, -1)));
+    org_particles.push_back(
+        Particle(1, 1, glm::vec2(7, 3), glm::vec2(2.1, -8.3)));
 
     for (const Particle& p : org_particles) {
       simulator.AddParticle(p);
@@ -379,5 +382,114 @@ TEST_CASE("Update functionality") {
       REQUIRE(particles[i].GetPosition() ==
               org_particles[i].GetPosition() + org_particles[i].GetVelocity());
     }
+  }
+
+  /************************************************************
+   * Tests that collisions can be detected in simulation with *
+   *                more than two particles                   *
+   *      (Repeat tests above with additional particle)       *
+   ************************************************************/
+
+  SECTION("Particles moving directly towards each other, one uninvolved") {
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(0, 1));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(0, -1));
+    Particle p3(1, 1, glm::vec2(2, 2), glm::vec2(1, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == glm::vec2(0, -1));
+    REQUIRE(particles[1].GetVelocity() == glm::vec2(0, 1));
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
+  }
+
+  SECTION("Particles moving in the exact same direction, one uninvolved") {
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(5, 0));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(2, 0));
+    Particle p3(1, 1, glm::vec2(97, 97), glm::vec2(1, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == glm::vec2(2, 0));
+    REQUIRE(particles[1].GetVelocity() == glm::vec2(5, 0));
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
+  }
+
+  SECTION(
+      "Particles moving towards each other in a glancing collision, one "
+      "uninvolved") {
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(1, 4));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(-2, -5));
+    Particle p3(1, 1, glm::vec2(97, 97), glm::vec2(1, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == glm::vec2(1, -5));
+    REQUIRE(particles[1].GetVelocity() == glm::vec2(-2, 4));
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
+  }
+
+  SECTION(
+      "Particles moving in the same direction in a glancing collision, one "
+      "uninvolved") {
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(7, 1));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(3, -3));
+    Particle p3(1, 1, glm::vec2(75, 24), glm::vec2(0, 0));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == glm::vec2(3, 1));
+    REQUIRE(particles[1].GetVelocity() == glm::vec2(7, -3));
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
+  }
+
+  SECTION(
+      "Particles in contact but moving away from each other, one uninvolved") {
+    Particle p1(1, 1, glm::vec2(30, 51), glm::vec2(0, -3));
+    Particle p2(1, 1, glm::vec2(30, 53), glm::vec2(0, 4));
+    Particle p3(1, 1, glm::vec2(7, 97), glm::vec2(4, -2));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == p1.GetVelocity());
+    REQUIRE(particles[1].GetVelocity() == p2.GetVelocity());
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
+  }
+
+  SECTION(
+      "Particles contact, move in the same direction, but don't collide, one "
+      "uninvolved") {
+    Particle p1(1, 1, glm::vec2(22, 53), glm::vec2(2, 1));
+    Particle p2(1, 1, glm::vec2(24, 53), glm::vec2(7, -3));
+    Particle p3(1, 1, glm::vec2(98, 97), glm::vec2(-1, -1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+
+    simulator.Update();
+    std::vector<Particle> particles = simulator.GetParticles();
+
+    REQUIRE(particles[0].GetVelocity() == p1.GetVelocity());
+    REQUIRE(particles[1].GetVelocity() == p2.GetVelocity());
+    REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
   }
 }
