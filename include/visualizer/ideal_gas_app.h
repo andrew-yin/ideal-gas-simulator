@@ -34,7 +34,9 @@ class IdealGasApp : public ci ::app ::App {
   /** The width of the box holding the particles in pixels */
   const double kBoxWidth = kWindowHeight - 2 * kMargin;
 
+  Simulator simulator_;
   Box box_;
+  /** Histograms to display speed data about the differently-sized particles */
   Histogram small_histogram_;
   Histogram medium_histogram_;
   Histogram large_histogram_;

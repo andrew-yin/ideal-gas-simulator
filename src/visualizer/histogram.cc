@@ -2,11 +2,11 @@
 
 namespace idealgas {
 
-Histogram::Histogram(const glm::vec2 &top_left_corner, const double box_width,
-                     const double box_height)
+Histogram::Histogram(Simulator& simulator, const glm::vec2& top_left_corner,
+                     const double box_width, const double box_height)
     : top_left_corner_(top_left_corner),
       box_width_(box_width),
-      box_height_(box_height) {
+      box_height_(box_height) simulator_(simulator) {
 }
 
 void Histogram::Draw() const {
@@ -18,9 +18,6 @@ void Histogram::Draw() const {
   ci::gl::drawSolidRect(pixel_bounding_box);
   ci::gl::color(ci::Color("black"));
   ci::gl::drawStrokedRect(pixel_bounding_box, 1.0);
-}
-
-void Histogram::Update() {
 }
 
 }  // namespace idealgas

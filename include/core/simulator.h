@@ -41,6 +41,7 @@ class Simulator {
   void AddRandomLargeParticle();
 
   const std::vector<Particle>& GetParticles() const;
+  size_t GetNumParticles() const;
 
   /** The width of the coordinate plane used for the simulation */
   const double kPlaneWidth = 100;

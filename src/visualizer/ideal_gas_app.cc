@@ -1,11 +1,9 @@
 #include <visualizer/ideal_gas_app.h>
 
-#include <ctime>
-
 namespace idealgas {
 
 IdealGasApp::IdealGasApp()
-    : box_(glm::vec2(kMargin, kMargin), kBoxWidth),
+    : box_(simulator_, glm::vec2(kMargin, kMargin), kBoxWidth),
       small_histogram_(glm::vec2(kWindowHeight, kMargin), kBoxWidth / 2,
                        kBoxWidth / 4),
       medium_histogram_(glm::vec2(kWindowHeight, 2 * kMargin + kBoxWidth / 4),
@@ -27,7 +25,7 @@ void IdealGasApp::draw() {
       glm::vec2(kWindowHeight / 2, kMargin / 2), ci::Color("black"));
 
   ci::gl::drawStringCentered(
-      "Number of Particles: " + std::to_string(box_.GetNumParticles()),
+      "Number of Particles: " + std::to_string(simulator_.GetNumParticles()),
       glm::vec2(kWindowHeight / 2, kWindowHeight - kMargin / 2),
       ci::Color("blue"));
 
@@ -38,12 +36,24 @@ void IdealGasApp::draw() {
 }
 
 void IdealGasApp::update() {
-  box_.Update();
-  small_histogram_.Update();
+  simulator_.Update();
 }
 
 void IdealGasApp::keyDown(ci::app::KeyEvent event) {
-  box_.HandleKeyEvent(event);
+  switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_1:
+      simulator_.AddRandomSmallParticle();
+      break;
+    case ci::app::KeyEvent::KEY_2:
+      simulator_.AddRandomMediumParticle();
+      break;
+    case ci::app::KeyEvent::KEY_3:
+      simulator_.AddRandomLargeParticle();
+      break;
+    case ci::app::KeyEvent::KEY_DELETE:
+      simulator_.Reset();
+      break;
+  }
 }
 
 }  // namespace idealgas

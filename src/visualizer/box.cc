@@ -2,44 +2,16 @@
 
 namespace idealgas {
 
-Box::Box(const glm::vec2& top_left_corner, double box_length)
+Box::Box(Simulator& simulator, const glm::vec2& top_left_corner,
+         double box_length)
     : top_left_corner_(top_left_corner),
       box_length_(box_length),
-      num_particles_(0) {
+      simulator_(simulator) {
 }
 
 void Box::Draw() const {
   DrawBox();
   DrawParticles();
-}
-
-void Box::Update() {
-  simulator_.Update();
-}
-
-void Box::HandleKeyEvent(cinder::app::KeyEvent event) {
-  switch (event.getCode()) {
-    case ci::app::KeyEvent::KEY_1:
-      simulator_.AddRandomSmallParticle();
-      num_particles_++;
-      break;
-    case ci::app::KeyEvent::KEY_2:
-      simulator_.AddRandomMediumParticle();
-      num_particles_++;
-      break;
-    case ci::app::KeyEvent::KEY_3:
-      simulator_.AddRandomLargeParticle();
-      num_particles_++;
-      break;
-    case ci::app::KeyEvent::KEY_DELETE:
-      simulator_.Reset();
-      num_particles_ = 0;
-      break;
-  }
-}
-
-const size_t& Box::GetNumParticles() const {
-  return num_particles_;
 }
 
 void Box::DrawBox() const {

@@ -80,6 +80,10 @@ const std::vector<Particle>& Simulator::GetParticles() const {
   return particles_;
 }
 
+size_t Simulator::GetNumParticles() const {
+  return particles_.size();
+}
+
 void Simulator::UpdateWallCollisions() {
   for (Particle& particle : particles_) {
     if (IsAgainstHorizontalWall(particle)) {
