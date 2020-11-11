@@ -46,22 +46,12 @@ void Histograms::DrawGraphs() const {
   std::vector<double> large_speeds = simulator_.GetLargeParticleSpeeds();
 
   std::vector<size_t> small_freqs = GetSpeedFrequencies(small_speeds);
-  size_t max_small_freq =
-      *std::max_element(small_freqs.begin(), small_freqs.end());
-
   std::vector<size_t> med_freqs = GetSpeedFrequencies(medium_speeds);
-  size_t max_med_freq = *std::max_element(med_freqs.begin(), med_freqs.end());
-
   std::vector<size_t> large_freqs = GetSpeedFrequencies(large_speeds);
-  size_t max_large_freq =
-      *std::max_element(large_freqs.begin(), large_freqs.end());
 
-  DrawHistogramBars(top_left_corners_[0], small_freqs, max_small_freq,
-                    simulator_.kSmallColor);
-  DrawHistogramBars(top_left_corners_[1], med_freqs, max_med_freq,
-                    simulator_.kMediumColor);
-  DrawHistogramBars(top_left_corners_[2], large_freqs, max_large_freq,
-                    simulator_.kLargeColor);
+  DrawHistogramBars(top_left_corners_[0], small_freqs, simulator_.kSmallColor);
+  DrawHistogramBars(top_left_corners_[1], med_freqs, simulator_.kMediumColor);
+  DrawHistogramBars(top_left_corners_[2], large_freqs, simulator_.kLargeColor);
 
   DrawXAxis();
   DrawYAxis();
@@ -83,6 +73,7 @@ std::vector<size_t> Histograms::GetSpeedFrequencies(
     frequencies.push_back(count);
   }
 
+  /* The last histogram interval is unbounded, deal with it seperately */
   double interval_min = speed_intervals_[speed_intervals_.size() - 2];
   size_t count = 0;
   for (double speed : speeds) {
@@ -97,7 +88,6 @@ std::vector<size_t> Histograms::GetSpeedFrequencies(
 
 void Histograms::DrawHistogramBars(const glm::vec2& top_left_corner,
                                    const std::vector<size_t>& frequencies,
-                                   size_t max_frequency,
                                    const ci::Color& color) const {
   double bar_width = graph_width_ / kNumSpeedIntervals;
 
@@ -123,6 +113,7 @@ void Histograms::DrawHistogramBars(const glm::vec2& top_left_corner,
 void Histograms::DrawXAxis() const {
   double spacer = 10;
   for (const glm::vec2& top_left_corner : top_left_corners_) {
+    DrawXLabel(top_left_corner);
     glm::vec2 bot_left_corner =
         top_left_corner + glm::vec2(0, graph_height_ + spacer);
 
@@ -134,6 +125,8 @@ void Histograms::DrawXAxis() const {
                                  cinder::Font("Arial", 8));
       bot_left_corner += glm::vec2(graph_width_ / kNumSpeedIntervals, 0);
     }
+
+    /* Add '+' to end of label, deal with it separately */
     std::stringstream ss;
     ss << std::fixed << std::setprecision(1) << speed_intervals_.back() * 10;
     std::string speed = ss.str();
@@ -145,6 +138,7 @@ void Histograms::DrawXAxis() const {
 void Histograms::DrawYAxis() const {
   double spacer = 10;
   for (const glm::vec2& top_left_corner : top_left_corners_) {
+    DrawYLabel(top_left_corner);
     glm::vec2 bot_left_corner =
         top_left_corner + glm::vec2(-spacer, graph_height_);
 
@@ -154,10 +148,31 @@ void Histograms::DrawYAxis() const {
                                  cinder::Font("Arial", 8));
       bot_left_corner += glm::vec2(0, -graph_height_ / kNumFreqIntervals);
     }
+
+    /* Add '+' to end of label, deal with it separately */
     ci::gl::drawStringCentered(std::to_string(freq_intervals_.back()) + "+",
                                bot_left_corner, ci::Color("black"),
                                cinder::Font("Arial", 8));
   }
+}
+void Histograms::DrawXLabel(const glm::vec2& top_left_corner) const {
+  double spacer = 40;
+  glm::vec2 bot_left_corner =
+      top_left_corner + glm::vec2(0, graph_height_ + spacer);
+  glm::vec2 bot_right_corner = bot_left_corner + glm::vec2(graph_width_, 0);
+
+  glm::vec2 label_location((bot_left_corner.x + bot_right_corner.x) * 0.5,
+                           bot_left_corner.y);
+  ci::gl::drawStringCentered("Speed", label_location, ci::Color("black"));
+}
+void Histograms::DrawYLabel(const glm::vec2& top_left_corner) const {
+  double spacer = 10;
+  glm::vec2 top_right_corner = top_left_corner + glm::vec2(graph_width_, 0);
+  glm::vec2 bot_right_corner = top_right_corner + glm::vec2(0, graph_height_);
+
+  glm::vec2 label_location(top_right_corner.x + spacer,
+                           (top_right_corner.y + bot_right_corner.y) * 0.5);
+  ci::gl::drawString("Freq.", label_location, ci::Color("black"));
 }
 
 }  // namespace idealgas

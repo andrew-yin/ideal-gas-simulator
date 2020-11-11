@@ -39,9 +39,11 @@ class Histograms {
 
   void DrawHistogramBars(const glm::vec2& top_left_corner,
                          const std::vector<size_t>& frequencies,
-                         size_t max_frequency, const cinder::Color& color) const;
+                         const cinder::Color& color) const;
   void DrawXAxis() const;
   void DrawYAxis() const;
+  void DrawXLabel(const glm::vec2& top_left_corner) const;
+  void DrawYLabel(const glm::vec2& top_left_corner) const;
 };
 
 }  // namespace idealgas
