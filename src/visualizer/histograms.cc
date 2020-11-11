@@ -3,6 +3,7 @@
 namespace idealgas {
 
 void Histograms::Setup() {
+  /* Fill the vectors representing speed and frequency */
   speed_intervals_.push_back(0);
   freq_intervals_.push_back(0);
   for (size_t i = 1; i <= kNumSpeedIntervals; i++) {
@@ -13,7 +14,7 @@ void Histograms::Setup() {
   }
 }
 
-Histograms::Histograms(Simulator& simulator,
+Histograms::Histograms(const Simulator& simulator,
                        const std::vector<glm::vec2>& top_left_corners,
                        const double graph_width, const double graph_height)
     : top_left_corners_(top_left_corners),
@@ -41,18 +42,22 @@ void Histograms::DrawBorders() const {
 }
 
 void Histograms::DrawGraphs() const {
+  /* Obtain speed data from the simulator */
   std::vector<double> small_speeds = simulator_.GetSmallParticleSpeeds();
   std::vector<double> medium_speeds = simulator_.GetMediumParticleSpeeds();
   std::vector<double> large_speeds = simulator_.GetLargeParticleSpeeds();
 
+  /* Obtain frequencies based on the speed */
   std::vector<size_t> small_freqs = GetSpeedFrequencies(small_speeds);
   std::vector<size_t> med_freqs = GetSpeedFrequencies(medium_speeds);
   std::vector<size_t> large_freqs = GetSpeedFrequencies(large_speeds);
 
+  /* Draw histogram basd on the frequencies */
   DrawHistogramBars(top_left_corners_[0], small_freqs, simulator_.kSmallColor);
   DrawHistogramBars(top_left_corners_[1], med_freqs, simulator_.kMediumColor);
   DrawHistogramBars(top_left_corners_[2], large_freqs, simulator_.kLargeColor);
 
+  /* Draw axes and labels */
   DrawXAxis();
   DrawYAxis();
 }
@@ -81,8 +86,8 @@ std::vector<size_t> Histograms::GetSpeedFrequencies(
       count++;
     }
   }
-
   frequencies.push_back(count);
+
   return frequencies;
 }
 
@@ -93,6 +98,10 @@ void Histograms::DrawHistogramBars(const glm::vec2& top_left_corner,
 
   glm::vec2 bar_bot_left_corner = top_left_corner + glm::vec2(0, graph_height_);
   for (size_t frequency : frequencies) {
+    /*
+     * Check if the frequency is higher than the maximum plottable, and if it is
+     * set it to the maximum to avoid the bar exceeding the height of the graph
+     */
     double bar_height = frequency <= kMaxFrequency
                             ? (double)frequency / kMaxFrequency * graph_height_
                             : graph_height_;
@@ -155,6 +164,7 @@ void Histograms::DrawYAxis() const {
                                cinder::Font("Arial", 8));
   }
 }
+
 void Histograms::DrawXLabel(const glm::vec2& top_left_corner) const {
   double spacer = 40;
   glm::vec2 bot_left_corner =
@@ -165,6 +175,7 @@ void Histograms::DrawXLabel(const glm::vec2& top_left_corner) const {
                            bot_left_corner.y);
   ci::gl::drawStringCentered("Speed", label_location, ci::Color("black"));
 }
+
 void Histograms::DrawYLabel(const glm::vec2& top_left_corner) const {
   double spacer = 10;
   glm::vec2 top_right_corner = top_left_corner + glm::vec2(graph_width_, 0);
