@@ -212,18 +212,21 @@ std::vector<double> Simulator::GetLargeParticleSpeeds() const {
 }
 
 bool Simulator::IsSmall(const Particle& p) const {
-  return p.GetRadius() == kSmallRadius && p.GetMass() == kSmallMass &&
-         p.GetColor() == kSmallColor;
+  double epsilon = 0.001;
+  return std::abs(p.GetRadius() - kSmallRadius) < epsilon &&
+         std::abs(p.GetMass() - kSmallMass) < epsilon;
 }
 
 bool Simulator::IsMedium(const Particle& p) const {
-  return p.GetRadius() == kMediumRadius && p.GetMass() == kMediumMass &&
-         p.GetColor() == kMediumColor;
+  double epsilon = 0.001;
+  return std::abs(p.GetRadius() - kMediumRadius) < epsilon &&
+         std::abs(p.GetMass() - kMediumMass) < epsilon;
 }
 
 bool Simulator::IsLarge(const Particle& p) const {
-  return p.GetRadius() == kLargeRadius && p.GetMass() == kLargeMass &&
-         p.GetColor() == kLargeColor;
+  double epsilon = 0.001;
+  return std::abs(p.GetRadius() - kLargeRadius) < epsilon &&
+         std::abs(p.GetMass() - kLargeMass) < epsilon;
 }
 
 }  // namespace idealgas

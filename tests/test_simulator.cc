@@ -493,3 +493,193 @@ TEST_CASE("Update functionality") {
     REQUIRE(particles[2].GetVelocity() == p3.GetVelocity());
   }
 }
+
+TEST_CASE("Get___ParticleSpeeds() functionality") {
+  Simulator simulator;
+
+  SECTION("Empty simulator") {
+    std::vector<double> small_particles = simulator.GetSmallParticleSpeeds();
+    std::vector<double> med_particles = simulator.GetMediumParticleSpeeds();
+    std::vector<double> large_particles = simulator.GetLargeParticleSpeeds();
+    REQUIRE(small_particles.empty());
+    REQUIRE(med_particles.empty());
+    REQUIRE(large_particles.empty());
+  }
+
+  /************************************************************
+   *                 GetSmallParticleSpeeds()                 *
+   ************************************************************/
+  SECTION("Simulator has particles but no small particles") {
+    simulator.AddRandomLargeParticle();
+    simulator.AddRandomMediumParticle();
+    std::vector<double> small_particles = simulator.GetSmallParticleSpeeds();
+    REQUIRE(small_particles.empty());
+  }
+
+  SECTION("Single small particle") {
+    /* Small particles have mass and radius 1 */
+    Particle p(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
+    simulator.AddParticle(p);
+
+    std::vector<double> small_particles = simulator.GetSmallParticleSpeeds();
+    REQUIRE(small_particles[0] == glm::length(p.GetVelocity()));
+  }
+
+  SECTION("Multiple small particles") {
+    Particle p1(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1, 1, glm::vec2(2, 1), glm::vec2(2, 1));
+    Particle p3(1, 1, glm::vec2(3, 1), glm::vec2(3, 1));
+    Particle p4(1, 1, glm::vec2(4, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    std::vector<double> small_particles = simulator.GetSmallParticleSpeeds();
+    REQUIRE(small_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(small_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(small_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(small_particles[3] == glm::length(p4.GetVelocity()));
+  }
+
+  SECTION("Multiple small particles with multiple non-small particles") {
+    Particle p1(1, 1, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1, 1, glm::vec2(2, 1), glm::vec2(2, 1));
+    Particle p3(1, 1, glm::vec2(3, 1), glm::vec2(3, 1));
+    Particle p4(1, 1, glm::vec2(4, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    /* Add extra non-small particles */
+    simulator.AddRandomMediumParticle();
+    simulator.AddRandomMediumParticle();
+    simulator.AddRandomLargeParticle();
+    simulator.AddRandomLargeParticle();
+
+    std::vector<double> small_particles = simulator.GetSmallParticleSpeeds();
+    REQUIRE(small_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(small_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(small_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(small_particles[3] == glm::length(p4.GetVelocity()));
+  }
+
+  /************************************************************
+   *                 GetMediumParticleSpeeds()                *
+   ************************************************************/
+  SECTION("Simulator has particles but no medium particles") {
+    simulator.AddRandomLargeParticle();
+    simulator.AddRandomSmallParticle();
+    std::vector<double> med_particles = simulator.GetMediumParticleSpeeds();
+    REQUIRE(med_particles.empty());
+  }
+
+  SECTION("Single medium particle") {
+    /* Medium particles have mass 2 and radius 1.25 */
+    Particle p(1.25, 2, glm::vec2(1, 1), glm::vec2(1, 1));
+    simulator.AddParticle(p);
+
+    std::vector<double> med_particles = simulator.GetMediumParticleSpeeds();
+    REQUIRE(med_particles[0] == glm::length(p.GetVelocity()));
+  }
+
+  SECTION("Multiple medium particles") {
+    Particle p1(1.25, 2, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1.25, 2, glm::vec2(2, 1), glm::vec2(2, 1));
+    Particle p3(1.25, 2, glm::vec2(3, 1), glm::vec2(3, 1));
+    Particle p4(1.25, 2, glm::vec2(4, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    std::vector<double> med_particles = simulator.GetMediumParticleSpeeds();
+    REQUIRE(med_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(med_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(med_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(med_particles[3] == glm::length(p4.GetVelocity()));
+  }
+
+  SECTION("Multiple medium particles with multiple non-medium particles") {
+    Particle p1(1.25, 2, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1.25, 2, glm::vec2(2, 1), glm::vec2(2, 1));
+    Particle p3(1.25, 2, glm::vec2(3, 1), glm::vec2(3, 1));
+    Particle p4(1.25, 2, glm::vec2(4, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    /* Add extra non-medium particles */
+    simulator.AddRandomSmallParticle();
+    simulator.AddRandomSmallParticle();
+    simulator.AddRandomLargeParticle();
+    simulator.AddRandomLargeParticle();
+
+    std::vector<double> med_particles = simulator.GetMediumParticleSpeeds();
+    REQUIRE(med_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(med_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(med_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(med_particles[3] == glm::length(p4.GetVelocity()));
+  }
+
+  /************************************************************
+   *                 GetLargeParticleSpeeds()                 *
+   ************************************************************/
+  SECTION("Simulator has particles but no large particles") {
+    simulator.AddRandomSmallParticle();
+    simulator.AddRandomMediumParticle();
+    std::vector<double> large_particles = simulator.GetLargeParticleSpeeds();
+    REQUIRE(large_particles.empty());
+  }
+
+  SECTION("Single large particle") {
+    /* Large particles have mass 4 and radius 1.5 */
+    Particle p(1.5, 4, glm::vec2(1, 1), glm::vec2(1, 1));
+    simulator.AddParticle(p);
+
+    std::vector<double> large_particles = simulator.GetLargeParticleSpeeds();
+    REQUIRE(large_particles[0] == glm::length(p.GetVelocity()));
+  }
+
+  SECTION("Multiple small particles") {
+    Particle p1(1.5, 4, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1.5, 4, glm::vec2(2, 1), glm::vec2(2, 1));
+    Particle p3(1.5, 4, glm::vec2(3, 1), glm::vec2(3, 1));
+    Particle p4(1.5, 4, glm::vec2(4, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    std::vector<double> large_particles = simulator.GetLargeParticleSpeeds();
+    REQUIRE(large_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(large_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(large_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(large_particles[3] == glm::length(p4.GetVelocity()));
+  }
+
+  SECTION("Multiple small particles with multiple non-small particles") {
+    Particle p1(1.5, 4, glm::vec2(1, 1), glm::vec2(1, 1));
+    Particle p2(1.5, 4, glm::vec2(4, 1), glm::vec2(2, 1));
+    Particle p3(1.5, 4, glm::vec2(8, 1), glm::vec2(3, 1));
+    Particle p4(1.5, 4, glm::vec2(12, 1), glm::vec2(4, 1));
+    simulator.AddParticle(p1);
+    simulator.AddParticle(p2);
+    simulator.AddParticle(p3);
+    simulator.AddParticle(p4);
+
+    /* Add extra non-large particles */
+    simulator.AddRandomMediumParticle();
+    simulator.AddRandomMediumParticle();
+    simulator.AddRandomSmallParticle();
+    simulator.AddRandomSmallParticle();
+
+    std::vector<double> large_particles = simulator.GetLargeParticleSpeeds();
+    REQUIRE(large_particles[0] == glm::length(p1.GetVelocity()));
+    REQUIRE(large_particles[1] == glm::length(p2.GetVelocity()));
+    REQUIRE(large_particles[2] == glm::length(p3.GetVelocity()));
+    REQUIRE(large_particles[3] == glm::length(p4.GetVelocity()));
+  }
+}
