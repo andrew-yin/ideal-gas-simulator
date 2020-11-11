@@ -4,12 +4,13 @@ namespace idealgas {
 
 IdealGasApp::IdealGasApp()
     : box_(simulator_, glm::vec2(kMargin, kMargin), kBoxWidth),
-      histograms_(simulator_,
-                  std::vector<glm::vec2>(
-                      {glm::vec2(kWindowHeight, kMargin),
-                      glm::vec2(kWindowHeight, 2 * kMargin + kBoxWidth / 4),
-                      glm::vec2(kWindowHeight, 3 * kMargin + 2 * kBoxWidth / 4)}),
-                  kBoxWidth / 2, kBoxWidth / 4) {
+      histograms_(
+          simulator_,
+          std::vector<glm::vec2>(
+              {glm::vec2(kWindowHeight, kMargin),
+               glm::vec2(kWindowHeight, 2 * kMargin + kBoxWidth / 4),
+               glm::vec2(kWindowHeight, 3 * kMargin + 2 * kBoxWidth / 4)}),
+          kBoxWidth / 2, kBoxWidth / 4) {
   ci::app::setWindowSize((int)kWindowWidth, (int)kWindowHeight);
 }
 
@@ -31,6 +32,11 @@ void IdealGasApp::draw() {
       "Number of Particles: " + std::to_string(simulator_.GetNumParticles()),
       glm::vec2(kWindowHeight / 2, kWindowHeight - kMargin / 2),
       ci::Color("blue"));
+
+  ci::gl::drawStringCentered(
+      "Histograms of small, medium, and large particles",
+      glm::vec2(2 * kMargin + kBoxWidth + kBoxWidth / 4, kMargin / 2),
+      ci::Color("black"));
 
   box_.Draw();
   histograms_.Draw();
