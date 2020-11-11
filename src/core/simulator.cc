@@ -23,57 +23,54 @@ void Simulator::AddParticle(const Particle& particle) {
 }
 
 void Simulator::AddRandomSmallParticle() {
-  double radius = kPlaneWidth/100;
-  double mass = kPlaneWidth/100;
-  ci::Color color("red");
-
   /* Position calculated at random anywhere on the coordinate plane accounting
      for radius size */
-  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
-  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_x =
+      cinder::Rand::randFloat(kSmallRadius, kPlaneWidth - kSmallRadius);
+  double pos_y =
+      cinder::Rand::randFloat(kSmallRadius, kPlaneWidth - kSmallRadius);
   glm::vec2 pos(pos_x, pos_y);
 
   /* Velocity calculated at random but maximum scaled down based on radius */
   double scale_factor = 0.5;
-  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
-  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_x = cinder::Rand::randFloat(kSmallRadius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(kSmallRadius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel, color));
+  particles_.push_back(
+      Particle(kSmallRadius, kSmallMass, pos, vel, kSmallColor));
 }
 
 void Simulator::AddRandomMediumParticle() {
-  double radius = kPlaneWidth/100 * 1.25;
-  double mass = kPlaneWidth/100 * 2;
-  ci::Color color("blue");
-
-  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
-  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_x =
+      cinder::Rand::randFloat(kMediumRadius, kPlaneWidth - kMediumRadius);
+  double pos_y =
+      cinder::Rand::randFloat(kMediumRadius, kPlaneWidth - kMediumRadius);
   glm::vec2 pos(pos_x, pos_y);
 
   double scale_factor = 0.375;
-  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
-  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_x = cinder::Rand::randFloat(kMediumRadius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(kMediumRadius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel, color));
+  particles_.push_back(
+      Particle(kMediumRadius, kMediumMass, pos, vel, kMediumColor));
 }
 
 void Simulator::AddRandomLargeParticle() {
-  double radius = kPlaneWidth/100 * 1.5;
-  double mass = kPlaneWidth/100 * 3;
-  ci::Color color("green");
-
-  double pos_x = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
-  double pos_y = cinder::Rand::randFloat(radius, kPlaneWidth - radius);
+  double pos_x =
+      cinder::Rand::randFloat(kLargeRadius, kPlaneWidth - kLargeRadius);
+  double pos_y =
+      cinder::Rand::randFloat(kLargeRadius, kPlaneWidth - kLargeRadius);
   glm::vec2 pos(pos_x, pos_y);
 
   double scale_factor = 0.25;
-  double vel_x = cinder::Rand::randFloat(radius * scale_factor);
-  double vel_y = cinder::Rand::randFloat(radius * scale_factor);
+  double vel_x = cinder::Rand::randFloat(kLargeRadius * scale_factor);
+  double vel_y = cinder::Rand::randFloat(kLargeRadius * scale_factor);
   glm::vec2 vel(vel_x, vel_y);
 
-  particles_.push_back(Particle(radius, mass, pos, vel, color));
+  particles_.push_back(
+      Particle(kLargeRadius, kLargeMass, pos, vel, kLargeColor));
 }
 
 const std::vector<Particle>& Simulator::GetParticles() const {
@@ -182,6 +179,51 @@ std::pair<glm::vec2, glm::vec2> Simulator::ComputePostCollisionVelocities(
             (glm::length(x2 - x1) * glm::length(x2 - x1)) * (x2 - x1));
 
   return std::pair<glm::vec2, glm::vec2>(v1_prime, v2_prime);
+}
+
+std::vector<double> Simulator::GetSmallParticleSpeeds() const {
+  std::vector<double> speeds;
+  for (const Particle& p : particles_) {
+    if (IsSmall(p)) {
+      speeds.push_back(glm::length(p.GetVelocity()));
+    }
+  }
+  return speeds;
+}
+
+std::vector<double> Simulator::GetMediumParticleSpeeds() const {
+  std::vector<double> speeds;
+  for (const Particle& p : particles_) {
+    if (IsMedium(p)) {
+      speeds.push_back(glm::length(p.GetVelocity()));
+    }
+  }
+  return speeds;
+}
+
+std::vector<double> Simulator::GetLargeParticleSpeeds() const {
+  std::vector<double> speeds;
+  for (const Particle& p : particles_) {
+    if (IsLarge(p)) {
+      speeds.push_back(glm::length(p.GetVelocity()));
+    }
+  }
+  return speeds;
+}
+
+bool Simulator::IsSmall(const Particle& p) const {
+  return p.GetRadius() == kSmallRadius && p.GetMass() == kSmallMass &&
+         p.GetColor() == kSmallColor;
+}
+
+bool Simulator::IsMedium(const Particle& p) const {
+  return p.GetRadius() == kMediumRadius && p.GetMass() == kMediumMass &&
+         p.GetColor() == kMediumColor;
+}
+
+bool Simulator::IsLarge(const Particle& p) const {
+  return p.GetRadius() == kLargeRadius && p.GetMass() == kLargeMass &&
+         p.GetColor() == kLargeColor;
 }
 
 }  // namespace idealgas

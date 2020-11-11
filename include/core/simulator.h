@@ -32,7 +32,6 @@ class Simulator {
    * Methods to add a particle with specified size and random position/velocity
    * to the simulation
    */
-
   /** Mass and radius both 1% of simulator width */
   void AddRandomSmallParticle();
   /** Mass 2%, radius 1.5% of simulator width */
@@ -45,6 +44,23 @@ class Simulator {
 
   /** The width of the coordinate plane used for the simulation */
   const double kPlaneWidth = 100;
+
+  /** Returns a vector of the speeds of particles filtered by size, used for
+   *  histogram computation */
+  std::vector<double> GetSmallParticleSpeeds() const;
+  std::vector<double> GetMediumParticleSpeeds() const;
+  std::vector<double> GetLargeParticleSpeeds() const;
+
+  /** Measurements for the small, medium, and large particles */
+  const double kSmallMass = kPlaneWidth / 100;
+  const double kSmallRadius = kPlaneWidth / 100;
+  const ci::Color kSmallColor = ci::Color("red");
+  const double kMediumMass = kPlaneWidth / 100 * 2;
+  const double kMediumRadius = kPlaneWidth / 100 * 1.25;
+  const ci::Color kMediumColor = ci::Color("blue");
+  const double kLargeMass = kPlaneWidth / 100 * 4;
+  const double kLargeRadius = kPlaneWidth / 100 * 1.5;
+  const ci::Color kLargeColor = ci::Color("green");
 
  private:
   std::vector<Particle> particles_;
@@ -76,6 +92,12 @@ class Simulator {
    */
   std::pair<glm::vec2, glm::vec2> ComputePostCollisionVelocities(
       const Particle& p1, const Particle& p2) const;
+
+  /** Returns true if the specified particle is of a certain size, false
+   * otherwise */
+  bool IsSmall(const Particle& p) const;
+  bool IsMedium(const Particle& p) const;
+  bool IsLarge(const Particle& p) const;
 };
 
 }  // namespace idealgas
