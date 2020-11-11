@@ -3,9 +3,13 @@
 namespace idealgas {
 
 void Histograms::Setup() {
-  intervals_.push_back(0);
-  for (size_t i = 1; i <= kNumIntervals; i++) {
-    intervals_.push_back(intervals_.back() + kIntervalWidth);
+  speed_intervals_.push_back(0);
+  freq_intervals_.push_back(0);
+  for (size_t i = 1; i <= kNumSpeedIntervals; i++) {
+    speed_intervals_.push_back(speed_intervals_.back() + kSpeedIntervalWidth);
+  }
+  for (size_t i = 1; i <= kNumFreqIntervals; i++) {
+    freq_intervals_.push_back(freq_intervals_.back() + kFreqIntervalWidth);
   }
 }
 
@@ -41,14 +45,14 @@ void Histograms::DrawGraphs() const {
   std::vector<double> medium_speeds = simulator_.GetMediumParticleSpeeds();
   std::vector<double> large_speeds = simulator_.GetLargeParticleSpeeds();
 
-  std::vector<size_t> small_freqs = GetFrequencies(small_speeds);
+  std::vector<size_t> small_freqs = GetSpeedFrequencies(small_speeds);
   size_t max_small_freq =
       *std::max_element(small_freqs.begin(), small_freqs.end());
 
-  std::vector<size_t> med_freqs = GetFrequencies(medium_speeds);
+  std::vector<size_t> med_freqs = GetSpeedFrequencies(medium_speeds);
   size_t max_med_freq = *std::max_element(med_freqs.begin(), med_freqs.end());
 
-  std::vector<size_t> large_freqs = GetFrequencies(large_speeds);
+  std::vector<size_t> large_freqs = GetSpeedFrequencies(large_speeds);
   size_t max_large_freq =
       *std::max_element(large_freqs.begin(), large_freqs.end());
 
@@ -58,14 +62,17 @@ void Histograms::DrawGraphs() const {
                     simulator_.kMediumColor);
   DrawHistogramBars(top_left_corners_[2], large_freqs, max_large_freq,
                     simulator_.kLargeColor);
+
+  DrawXAxis();
+  DrawYAxis();
 }
 
-std::vector<size_t> Histograms::GetFrequencies(
+std::vector<size_t> Histograms::GetSpeedFrequencies(
     const std::vector<double>& speeds) const {
   std::vector<size_t> frequencies;
-  for (size_t i = 0; i < kNumIntervals; i++) {
-    double interval_min = intervals_[i];
-    double interval_max = intervals_[i + 1];
+  for (size_t i = 0; i < kNumSpeedIntervals - 1; i++) {
+    double interval_min = speed_intervals_[i];
+    double interval_max = speed_intervals_[i + 1];
 
     size_t count = 0;
     for (double speed : speeds) {
@@ -75,6 +82,16 @@ std::vector<size_t> Histograms::GetFrequencies(
     }
     frequencies.push_back(count);
   }
+
+  double interval_min = speed_intervals_[speed_intervals_.size() - 2];
+  size_t count = 0;
+  for (double speed : speeds) {
+    if (speed >= interval_min) {
+      count++;
+    }
+  }
+
+  frequencies.push_back(count);
   return frequencies;
 }
 
@@ -82,13 +99,13 @@ void Histograms::DrawHistogramBars(const glm::vec2& top_left_corner,
                                    const std::vector<size_t>& frequencies,
                                    size_t max_frequency,
                                    const ci::Color& color) const {
-  double max_frequency_height = graph_height_ * 3 / 4;
-  double bar_width = graph_width_ / kNumIntervals;
+  double bar_width = graph_width_ / kNumSpeedIntervals;
 
   glm::vec2 bar_bot_left_corner = top_left_corner + glm::vec2(0, graph_height_);
   for (size_t frequency : frequencies) {
-    double bar_height =
-        (double)frequency / max_frequency * max_frequency_height;
+    double bar_height = frequency <= kMaxFrequency
+                            ? (double)frequency / kMaxFrequency * graph_height_
+                            : graph_height_;
 
     glm::vec2 bar_top_left_corner =
         bar_bot_left_corner + glm::vec2(0, -bar_height);
@@ -101,6 +118,45 @@ void Histograms::DrawHistogramBars(const glm::vec2& top_left_corner,
     ci::gl::drawStrokedRect(bar, 1.0);
 
     bar_bot_left_corner += glm::vec2(bar_width, 0);
+  }
+}
+void Histograms::DrawXAxis() const {
+  double spacer = 10;
+  for (const glm::vec2& top_left_corner : top_left_corners_) {
+    glm::vec2 bot_left_corner =
+        top_left_corner + glm::vec2(0, graph_height_ + spacer);
+
+    for (size_t i = 0; i < kNumSpeedIntervals; i++) {
+      std::stringstream ss;
+      ss << std::fixed << std::setprecision(1) << speed_intervals_[i] * 10;
+      std::string speed = ss.str();
+      ci::gl::drawStringCentered(speed, bot_left_corner, ci::Color("black"),
+                                 cinder::Font("Arial", 8));
+      bot_left_corner += glm::vec2(graph_width_ / kNumSpeedIntervals, 0);
+    }
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << speed_intervals_.back() * 10;
+    std::string speed = ss.str();
+    ci::gl::drawStringCentered(speed + "+", bot_left_corner, ci::Color("black"),
+                               cinder::Font("Arial", 8));
+  }
+}
+
+void Histograms::DrawYAxis() const {
+  double spacer = 10;
+  for (const glm::vec2& top_left_corner : top_left_corners_) {
+    glm::vec2 bot_left_corner =
+        top_left_corner + glm::vec2(-spacer, graph_height_);
+
+    for (size_t i = 0; i < kNumFreqIntervals; i++) {
+      ci::gl::drawStringCentered(std::to_string(freq_intervals_[i]),
+                                 bot_left_corner, ci::Color("black"),
+                                 cinder::Font("Arial", 8));
+      bot_left_corner += glm::vec2(0, -graph_height_ / kNumFreqIntervals);
+    }
+    ci::gl::drawStringCentered(std::to_string(freq_intervals_.back()) + "+",
+                               bot_left_corner, ci::Color("black"),
+                               cinder::Font("Arial", 8));
   }
 }
 

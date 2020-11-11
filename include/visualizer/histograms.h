@@ -20,21 +20,28 @@ class Histograms {
   std::vector<glm::vec2> top_left_corners_;
   double graph_width_;
   double graph_height_;
-  std::vector<double> intervals_;
+  std::vector<double> speed_intervals_;
+  std::vector<size_t> freq_intervals_;
   Simulator& simulator_;
 
   void DrawBorders() const;
   void DrawGraphs() const;
 
-  std::vector<size_t> GetFrequencies(const std::vector<double>& speeds) const;
+  std::vector<size_t> GetSpeedFrequencies(const std::vector<double>& speeds) const;
 
-  const double kMaxSpeed = 1.5;
-  const size_t kNumIntervals = 20;
-  const double kIntervalWidth = kMaxSpeed / kNumIntervals;
+  const size_t kMaxFrequency = 15;
+  const size_t kNumFreqIntervals = 5;
+  const size_t kFreqIntervalWidth = kMaxFrequency / kNumFreqIntervals;
+
+  const double kMaxSpeed = 1;
+  const size_t kNumSpeedIntervals = 20;
+  const double kSpeedIntervalWidth = kMaxSpeed / kNumSpeedIntervals;
 
   void DrawHistogramBars(const glm::vec2& top_left_corner,
                          const std::vector<size_t>& frequencies,
                          size_t max_frequency, const cinder::Color& color) const;
+  void DrawXAxis() const;
+  void DrawYAxis() const;
 };
 
 }  // namespace idealgas
